@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="./md5.js"></script>
+		<script src="./squareIdenticon.js"></script>
+		<script src="./circularIdenticon.js"></script>
+		<script>
+			function draw(id){
+				id = id.toString();
+				console.log(id);
+				drawSquareIdenticon(id);
+				drawCircularIdenticon(id);
+			}
+		</script>
+		<style>
+			body {
+				margin-top: 200px;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+		</style>
+	</head>
+
+	<body onload="draw('')">
+		<textarea rows="8" cols="100" style="width: 600px; margin: 100px" oninput="draw(this.value)"></textarea>
+		<div>
+			<canvas id="squareIdenticonCanvas" width="300" height="300">squareIdenticon</canvas>
+			<canvas id="circularIdenticonCanvas" width="300" height="300">circularIdenticon</canvas>
+		</div>
+	</body>
+</html>
