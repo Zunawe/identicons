@@ -5,7 +5,7 @@ While the GitHub-style identicons are well-designed and widely implemented, they
 Here is a description of the algorithms used to generate each type of identicon. The particular hash function used in this project is MD5 (for its speed broad usability), but the principles can be applied to any reasonable hashing function for strings. The hashed data will be referred to as `hash`, and will be considered an array of bytes where `hash[0]` is the least significant byte and `hash[15]` is the most significant byte.
 
 ### Square
-![Square Identicon Example](http://i64.tinypic.com/dnkfar.png "Boxy")
+![Square Identicon Example](./examples/boxy.png "Boxy")
 
 Following the style of our friends at GitHub, this creates a 5x5 grid of pixels.
 
@@ -15,7 +15,7 @@ Following the style of our friends at GitHub, this creates a 5x5 grid of pixels.
 4. From low- to high-order bits, and from left to right and top to bottom, the bit determines whether a pixel in the grid is opaque or transparent. This is calculated for the first three pixels of each row and then mirrored to the other side. Bit four corresponds to the second row, first pixel.
 
 ### Circular
-![Circular Identicon Example](http://i63.tinypic.com/2dshkrd.png "Curvy")
+![Circular Identicon Example](./examples/curvy.png "Curvy")
 
 This style creates a circular icon with so many partially filled rings.
 
