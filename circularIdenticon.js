@@ -46,7 +46,7 @@ function drawCircularIdenticon(id){
 function circularIdenticonSVG(width, height, id){
 	var idHash = string2ByteArray(md5(id));
 	var size = Math.min(width, height);
-	var svg = '<svg width="' + width + '" height="' + height + '">';
+	var svg = '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg">';
 
 	var fillColor = "#" + padFront(idHash[13].toString(16), 2) +
 	                padFront(idHash[14].toString(16), 2) +

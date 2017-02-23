@@ -33,7 +33,7 @@ function drawSquareIdenticon(id){
 function squareIdenticonSVG(width, height, id){
 	var idHash = string2ByteArray(md5(id));
 	var size = Math.min(width, height);
-	var svg = '<svg width="' + width + '" height="' + height + '">';
+	var svg = '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">';
 
 	var pixelMap = [[], [], [], [], []];
 	for(var i = 0; i < 5; ++i){
