@@ -6,9 +6,10 @@
 		<script src="./circularIdenticon.js"></script>
 		<script>
 			function draw(id){
-				drawSquareIdenticon(id);
-				document.getElementById('circularIdenticon').innerHTML = circularIdenticonSVG(300, 300, id);
+				//drawSquareIdenticon(id);
 				//drawCircularIdenticon(id);
+				document.getElementById('squareIdenticon').innerHTML = squareIdenticonSVG(300, 300, id);
+				document.getElementById('circularIdenticon').innerHTML = circularIdenticonSVG(300, 300, id);
 			}
 		</script>
 		<style>
@@ -20,14 +21,19 @@
 				justify-content: center;
 				align-items: center;
 			}
+
+			#identicons {
+				display: flex;
+				flex-direction: row;
+			}
 		</style>
 	</head>
 
 	<body onload="draw('')">
 		<textarea rows="8" cols="100" style="width: 600px; margin: 100px" oninput="draw(this.value)"></textarea>
-		<div>
-			<canvas id="squareIdenticonCanvas" width="300" height="300">squareIdenticon</canvas>
-			<span id="circularIdenticon"></span>
+		<div id="identicons">
+			<div id="squareIdenticon"></div>
+			<div id="circularIdenticon"></div>
 		</div>
 	</body>
 </html>
