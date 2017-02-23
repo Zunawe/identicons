@@ -6,10 +6,9 @@
 		<script src="./circularIdenticon.js"></script>
 		<script>
 			function draw(id){
-				id = id.toString();
-				console.log(id);
 				drawSquareIdenticon(id);
-				drawCircularIdenticon(id);
+				document.getElementById('circularIdenticon').innerHTML = circularIdenticonSVG(300, 300, id);
+				//drawCircularIdenticon(id);
 			}
 		</script>
 		<style>
@@ -28,7 +27,7 @@
 		<textarea rows="8" cols="100" style="width: 600px; margin: 100px" oninput="draw(this.value)"></textarea>
 		<div>
 			<canvas id="squareIdenticonCanvas" width="300" height="300">squareIdenticon</canvas>
-			<canvas id="circularIdenticonCanvas" width="300" height="300">circularIdenticon</canvas>
+			<span id="circularIdenticon"></span>
 		</div>
 	</body>
 </html>
