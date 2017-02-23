@@ -1,6 +1,17 @@
 # Identicons
 While the GitHub-style identicons are well-designed and widely implemented, they're square. And while this is perfectly acceptable in many designs, variety in choice is never a bad thing. This project aims to apply the simplicity of GitHub identicons to other shapes and styles.
 
+## Use
+The identicon files rely on a function named md5() that takes a single input and returns the MD5 hash of the input in the form of a string. This project includes an md5.min.js file with this function (from []).
+
+The minified versions already include the contents of md5.min.js, and may be safely used as a single inclusion.
+
+The functions drawCircularIdenticon() and drawSquareIdenticon take an input to be hashed and draw the identicon into canvas elements named `circularIdenticonCanvas` and `squareIdenticonCanvas` respectively.
+
+The included file index.html gives a small example implementation in HTML.
+
+(The eventual goal is to be able to draw to an arbitrary canvas or to return an SVG of the identicon.)
+
 ## Algorithms
 Here is a description of the algorithms used to generate each type of identicon. The particular hash function used in this project is MD5 (for its speed broad usability), but the principles can be applied to any reasonable hashing function for strings. The hashed data will be referred to as `hash`, and will be considered an array of bytes where `hash[0]` is the least significant byte and `hash[15]` is the most significant byte.
 
