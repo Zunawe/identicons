@@ -25,7 +25,7 @@ This style creates a circular icon with so many partially filled rings.
 4. The innermost ring is a filled circle with radius `r` for every identicon.
 5. Starting from the inside and moving outward, the nth arc is drawn with inner radius `n * r` and outer radius `(n + 1) * r`. Calculations are done in polar coordinates.
   * Two angles are calculated:
-  	```theta1 = 2\pi * (hash[(n * 2) + 0] / 0xFF)```
-  	```theta2 = 2\pi * (hash[(n * 2) + 1] / 0xFF)```
+    * ```theta1 = 2\pi * (hash[(n * 2) + 0] / 0xFF)```
+    * ```theta2 = 2\pi * (hash[(n * 2) + 1] / 0xFF)```
   * The arc is drawn from smaller angle to bigger angle.
   * Each ring has exactly 1 arc in it.
