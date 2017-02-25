@@ -6,10 +6,14 @@
 		<script src="./circularIdenticon.js"></script>
 		<script>
 			function draw(id){
-				//drawSquareIdenticon(id);
-				//drawCircularIdenticon(id);
-				document.getElementById('squareIdenticon').innerHTML = squareIdenticonSVG(300, 300, id);
-				document.getElementById('circularIdenticon').innerHTML = circularIdenticonSVG(300, 300, id);
+				var squareIdenticonDiv = document.getElementById('squareIdenticon');
+				var circularIdenticonDiv = document.getElementById('circularIdenticon');
+
+				squareIdenticonDiv.innerHTML = '';
+				circularIdenticonDiv.innerHTML = '';
+
+				squareIdenticonDiv.appendChild(squareIdenticonSVG(300, 300, id));
+				circularIdenticonDiv.appendChild(circularIdenticonSVG(300, 300, id));
 			}
 		</script>
 		<style>

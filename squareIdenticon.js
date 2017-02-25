@@ -1,39 +1,14 @@
-function drawSquareIdenticon(id){
-	var canvas = document.getElementById('squareIdenticonCanvas');
-	var ctx = canvas.getContext('2d');
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	var size = Math.min(canvas.width, canvas.height);
-
-	var idHash = string2ByteArray(md5(id));
-
-	var pixelMap = [[], [], [], [], []];
-	for(var i = 0; i < 5; ++i){
-		for(var j = 0; j < 3; ++j){
-			pixelMap[i][j] = !getBit((i * 3) + j, idHash);
-		}
-		pixelMap[i][3] = pixelMap[i][1];
-		pixelMap[i][4] = pixelMap[i][0];
-	}
-
-	ctx.fillStyle = '#' + padFront(idHash[13].toString(16), 2) +
-	                padFront(idHash[14].toString(16), 2) +
-	                padFront(idHash[15].toString(16), 2);
-	var boxSize = Math.floor(size / 6);
-	var marginSize = Math.floor((boxSize / 2) + ((size % 6) / 2));
-
-	for(var i = 0; i < 5; ++i){
-		for(var j = 0; j < 5; ++j){
-			if(pixelMap[i][j]){
-				ctx.fillRect(marginSize + (j * boxSize), marginSize + (i * boxSize), boxSize, boxSize);
-			}
-		}
-	}
-}
-
 function squareIdenticonSVG(width, height, id){
 	var idHash = string2ByteArray(md5(id));
 	var size = Math.min(width, height);
-	var svg = '<svg width="' + width + '" height="' + height + '" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">';
+
+	var svgNS = 'http://www.w3.org/2000/svg';
+	var svg = document.createElementNS(svgNS, 'svg');
+
+	svg.setAttribute('width', width);
+	svg.setAttribute('height', height);
+	svg.setAttribute('xmlns', svgNS);
+	svg.setAttribute('shape-rendering', 'crispEdges');
 
 	var pixelMap = [[], [], [], [], []];
 	for(var i = 0; i < 5; ++i){
@@ -53,12 +28,19 @@ function squareIdenticonSVG(width, height, id){
 	for(var i = 0; i < 5; ++i){
 		for(var j = 0; j < 5; ++j){
 			if(pixelMap[i][j]){
-				svg += '<rect x="' + (marginSize + (j * boxSize)) + '" y="' + (marginSize + (i * boxSize)) + '" width="' + boxSize + '" height="' + boxSize + '" fill="' + fillColor + '" />';
+				var rect = document.createElementNS(svgNS, 'rect');
+
+				rect.setAttribute('x', marginSize + (j * boxSize));
+				rect.setAttribute('y', marginSize + (i * boxSize));
+				rect.setAttribute('width', boxSize);
+				rect.setAttribute('height', boxSize);
+				rect.setAttribute('fill', fillColor);
+
+				svg.appendChild(rect);
 			}
 		}
 	}
 
-	svg += '</svg>';
 	return svg;
 }
 
