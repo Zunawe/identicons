@@ -4,16 +4,20 @@
 		<script src="./md5.min.js"></script>
 		<script src="./squareIdenticon.js"></script>
 		<script src="./circularIdenticon.js"></script>
+		<script src="./polygonalIdenticon.js"></script>
 		<script>
 			function draw(id){
 				var squareIdenticonDiv = document.getElementById('squareIdenticon');
 				var circularIdenticonDiv = document.getElementById('circularIdenticon');
+				var polygonalIdenticonDiv = document.getElementById('polygonalIdenticon');
 
 				squareIdenticonDiv.innerHTML = '';
 				circularIdenticonDiv.innerHTML = '';
+				polygonalIdenticonDiv.innerHTML = '';
 
 				squareIdenticonDiv.appendChild(squareIdenticonSVG(300, 300, id));
 				circularIdenticonDiv.appendChild(circularIdenticonSVG(300, 300, id));
+				polygonalIdenticonDiv.appendChild(polygonalIdenticonSVG(300, 300, id, 5, 4));
 			}
 		</script>
 		<style>
@@ -38,6 +42,7 @@
 		<div id="identicons">
 			<div id="squareIdenticon"></div>
 			<div id="circularIdenticon"></div>
+			<div id="polygonalIdenticon"></div>
 		</div>
 	</body>
 </html>

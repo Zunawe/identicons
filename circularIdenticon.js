@@ -1,4 +1,4 @@
-function circularIdenticonSVG(width, height, id){
+function circularIdenticonSVG(width, height, id, shells){
 	var idHash = string2ByteArray(md5(id));
 	var size = Math.min(width, height);
 
@@ -6,10 +6,10 @@ function circularIdenticonSVG(width, height, id){
 	                padFront(idHash[14].toString(16), 2) +
 	                padFront(idHash[15].toString(16), 2);
 
-	var shells = 4;
+	shells = shells || 4;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
-	var centerx = Math.floor(size / 2);
-	var centery = centerx;
+	var centerx = Math.floor(width / 2);
+	var centery = Math.floor(height / 2);
 	
 	var svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
@@ -18,7 +18,6 @@ function circularIdenticonSVG(width, height, id){
 	svg.setAttribute('height', height);
 	svg.setAttribute('xmlns', svgNS);
 
-	//svg += '<circle cx="' + centerx + '" cy="' + centery + '" r="' + (innerRadius + 1) + '" fill="' + fillColor + '" />';
 	var innerCircle = document.createElementNS(svgNS, 'circle');
 
 	innerCircle.setAttribute('cx', centerx);
