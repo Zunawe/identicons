@@ -6,7 +6,10 @@ The identicon files rely on a function named md5() that takes a single input and
 
 The minified versions already include the contents of md5.min.js, and may be safely used as a single inclusion.
 
-The functions circularIdenticonSVG() and squareIdenticonSVG() return a string containing an SVG element. This element may be placed into the innerHTML object of an element in the document.
+The functions circularIdenticonSVG() and squareIdenticonSVG() return an SVG element that may be appended to elements via JavaScript. For example:
+```
+document.body.appendChild(squareIdenticonSVG(300, 300, "Hello, world!"));
+```
 
 The included file index.html gives a small example implementation in HTML.
 
