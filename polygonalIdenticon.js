@@ -20,6 +20,7 @@ function polygonalIdenticonSVG(width, height, id, edges, shells){
 	svg.setAttribute('xmlns', svgNS);
 	//svg.setAttribute('shape-rendering', 'crispEdges');
 
+	// TODO: Draw "arc" instead of each edge to avoid seams
 	for(var i = 0; i < shells; ++i){
 		for(var j = 0; j < edges; ++j){
 			if(!i || getBit(((i * shells) + j) % idHash.length, idHash)){
