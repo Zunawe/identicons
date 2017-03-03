@@ -56,6 +56,14 @@ function polygonalIdenticonSVG(width, height, id, edges, shells){
 	return svg;
 }
 
+function string2ByteArray(string){
+	var bytes = [];
+	for(var i = 0; i < string.length; ++i){
+		bytes[i] = parseInt(string.substr(i * 2, 2), 16);
+	}
+	return bytes;
+}
+
 function polar2CartesianX(r, theta){
 	var radians = Math.PI * (theta - 90) / 180;
 	return r * Math.cos(radians);
