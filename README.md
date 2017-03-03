@@ -6,9 +6,11 @@ The identicon files rely on a function named md5() that takes a single input and
 
 The minified versions already include the contents of md5.min.js, and may be safely used as a single inclusion.
 
-The functions circularIdenticonSVG() and squareIdenticonSVG() return an SVG element that may be appended to elements via JavaScript. For example:
+The functions squareIdenticonSVG(), circularIdenticonSVG(), and polygonalIdenticonSVG() return an SVG element that may be appended to elements via JavaScript.
 ```
-document.body.appendChild(squareIdenticonSVG(300, 300, "Hello, world!"));
+squareIdenticonSVG(width: Number, height: Number, id: String);
+circularIdenticonSVG(width: Number, height: Number, id: String, [shells: Number = 4]);
+polygonalIdenticonSVG(width: Number, height: Number, id: String, [edges: Number = 5], [shells: number = 4]);
 ```
 
 The included file index.html gives a small example implementation in HTML.
@@ -24,15 +26,15 @@ Following the style of our friends at GitHub, this creates a 5x5 grid of pixels.
 1. The size of a pixel is determined to be 1/6th (rounded down) the dimensions of the canvas size (which is square).
 2. Each margin is 1/12th the dimensions of the canvas plus the amount truncated from the calculation of the pixel size.
 3. Color is determined by hexadecimal RGB with `hash[13]`, `hash[14]`, and `hash[15]` as values respectively.
-4. From low- to high-order bits, and from left to right and top to bottom, the bit determines whether a pixel in the grid is opaque or transparent. This is calculated for the first three pixels of each row and then mirrored to the other side. Bit four corresponds to the second row, first pixel.
+4. From low- to high-order bits, and from left to right and top to bottom, the bit determines whether a pixel in the grid is filled or empty. This is calculated for the first three pixels of each row and then mirrored to the other side. Bit four corresponds to the second row, first pixel.
 
 ### Circular
 ![Circular Identicon Example](./examples/curvy.png "Curvy")
 
 This style creates a circular icon with so many partially filled rings.
 
-1. The innermost ring (the filled circle) has radius `r = (size / ((num_shells * 2) + 1))`.
-2. The nth ring moving outward from the center has radius `n * r` (`n = 0` is the innermost ring).
+1. Each shell is a circle with a radius that is a multiple of the radius `r = (size / ((num_shells * 2) + 1))`.
+2. The nth ring moving outward from the center has inner radius `n * r` and inouterner radius `(n + 1) * r` (`n = 0` is the innermost ring).
 3. Color is determined by hexadecimal RGB with `hash[13]`, `hash[14]`, and `hash[15]` as values respectively.
 4. The innermost ring is a filled circle with radius `r` for every identicon.
 5. Starting from the inside and moving outward, the nth arc is drawn with inner radius `n * r` and outer radius `(n + 1) * r`. Calculations are done in polar coordinates.
@@ -41,3 +43,14 @@ This style creates a circular icon with so many partially filled rings.
     * ```theta2 = 2\pi * (hash[(n * 2) + 1] / 0xFF)```
   * The arc is drawn from smaller angle to bigger angle.
   * Each ring has exactly 1 arc in it.
+
+### Polygonal
+
+
+The polygonal option is the most versatile so far. It produces a shell of polygons where some edges are filled and others are empty (similar to circular, but with edges).
+
+1. The vertices of the each shell are based on a circle of radius `r = (size / ((num_shells * 2) + 1))`.
+2. The nth shell moving outward from the center has outer radius `n * r` and inner radius `((n + 1) * r) * 0.9` (`n = 0` is the innermost shape).
+3. Color is determined by hexadecimal RGB with `hash[13]`, `hash[14]`, and `hash[15]` as values respectively.
+4. The innermost shape is always filled completely.
+5. For each shell, going from inner shell to outer shell, from low- to high-order bits, starting at an angle of 0 degrees and moving counterclockwise, the bit determines whether an edge is filled or empty. A polygon of `m` sides has a radial length of `360 / m`.

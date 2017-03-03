@@ -6,7 +6,7 @@ function polygonalIdenticonSVG(width, height, id, edges, shells){
 	                padFront(idHash[14].toString(16), 2) +
 	                padFront(idHash[15].toString(16), 2);
 
-	edges = edges || 3;
+	edges = edges || 5;
 	shells = shells || 4;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
 	var centerx = Math.floor(width / 2);
