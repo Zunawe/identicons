@@ -1,0 +1,3 @@
+[submodule "md5-js"]
+	path = md5-js
+	url = https://github.com/Zunawe/md5-js.git

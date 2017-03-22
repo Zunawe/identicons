@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="./minified/identicons.min.js"></script>
+		<script src="./md5-js/md5.min.js"></script>
+		<script src="squareIdenticon.js"></script>
+		<script src="circularIdenticon.js"></script>
+		<script src="polygonalIdenticon.js"></script>
 		<script>
 			function draw(id){
 				var squareIdenticonDiv = document.getElementById('squareIdenticon');
@@ -14,7 +17,7 @@
 
 				squareIdenticonDiv.appendChild(squareIdenticonSVG(300, 300, id));
 				circularIdenticonDiv.appendChild(circularIdenticonSVG(300, 300, id));
-				polygonalIdenticonDiv.appendChild(polygonalIdenticonSVG(300, 300, id));
+				polygonalIdenticonDiv.appendChild(polygonalIdenticonSVG(300, 300, id, 5));
 			}
 		</script>
 		<style>
