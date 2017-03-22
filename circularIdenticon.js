@@ -6,6 +6,7 @@ function circularIdenticonSVG(size, id, options){
 	                padFront(idHash[15].toString(16), 2);
 
 	var shells = (options && options['shells']) || 4;
+	var segments = (options && options['segments']) || Infinity;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
 	var centerx = Math.floor(size / 2);
 	var centery = Math.floor(size / 2);
@@ -27,8 +28,8 @@ function circularIdenticonSVG(size, id, options){
 	svg.appendChild(innerCircle);
 
 	for(var i = 1; i < shells; ++i){
-		var theta1 = 360 * (idHash[(i * 2) + 0] / 0xFF);
-		var theta2 = 360 * (idHash[(i * 2) + 1] / 0xFF);
+		var theta1 = floorToMultiple(360 * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
+		var theta2 = floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments)
 
 		if(theta2 < theta1){
 			var temp = theta1;
@@ -74,4 +75,13 @@ function polar2CartesianX(r, theta){
 function polar2CartesianY(r, theta){
 	var radians = Math.PI * (theta - 90) / 180;
 	return r * Math.sin(radians);
+}
+
+function floorToMultiple(n, m){
+	if(!m){
+		return n;
+	}
+	n /= m;
+	n = Math.floor(n);
+	return n * m;
 }

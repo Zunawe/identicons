@@ -7,11 +7,43 @@ The identicon files rely on a function named md5() that takes a single input and
 The minified versions already include the contents of md5.min.js, and may be safely used as a single inclusion.
 
 The functions squareIdenticonSVG(), circularIdenticonSVG(), and polygonalIdenticonSVG() return an SVG element that may be appended to elements via JavaScript.
+
+### Square
 ```
-squareIdenticonSVG(width: Number, height: Number, id: String);
-circularIdenticonSVG(width: Number, height: Number, id: String, [options: {shells: Number = 4}]);
-polygonalIdenticonSVG(width: Number, height: Number, id: String, [options: {edges: Number = 5, shells: number = 4}]);
+squareIdenticonSVG(size, id);
 ```
+* **size**: *number*
+  * The side length in pixels to define for the SVG
+* **id**: *string*
+  * The id to be hashed for this identicon
+
+### Circular
+```
+circularIdenticonSVG(size, id, [options]);
+```
+* **size**: *number*
+  * The side length in pixels to define for the SVG
+* **id**: *string*
+  * The id to be hashed for this identicon
+* **options**: *object* (optional)
+  * **shells**: *number* = 4
+    * The number of shells to create (including the inner circle)
+  * **segments**: *number* = Infinity
+    * Separates each shell into the provided number of segments, effectively snapping the edges of each arc to certain angles. Lower numbers increase the size of the smallest possible arclength, but provide slightly less overall variation (not enough to cause frequent collisions)
+
+### Polygonal
+```
+polygonalIdenticonSVG(size, id, [options]);
+```
+* **size**: *number*
+  * The side length in pixels to define for the SVG
+* **id**: *string*
+  * The id to be hashed for this identicon
+* **options**: *object* (optional)
+  * **shells**: *number* = 4
+    * The number of shells to create (including the inner shape)
+  * **edges**: *number* = 5
+    * The number of sides for the regular n-gon created (i.e. a value of 5 means a regular pentagon).
 
 The included file index.html gives a small example implementation in HTML.
 
