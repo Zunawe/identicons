@@ -7,22 +7,34 @@
 		<script src="polygonalIdenticon.js"></script>
 		<script>
 			function draw(id){
-				var squareIdenticonDiv = document.getElementById('squareIdenticon');
-				var circularIdenticonDiv = document.getElementById('circularIdenticon');
-				var polygonalIdenticonDiv = document.getElementById('polygonalIdenticon');
+				var squareIdenticonDiv1 = document.getElementById('squareIdenticon1');
+				var circularIdenticonDiv1 = document.getElementById('circularIdenticon1');
+				var circularIdenticonDiv2 = document.getElementById('circularIdenticon2');
+				var circularIdenticonDiv3 = document.getElementById('circularIdenticon3');
+				var polygonalIdenticonDiv1 = document.getElementById('polygonalIdenticon1');
+				var polygonalIdenticonDiv2 = document.getElementById('polygonalIdenticon2');
+				var polygonalIdenticonDiv3 = document.getElementById('polygonalIdenticon3');
 
-				squareIdenticonDiv.innerHTML = '';
-				circularIdenticonDiv.innerHTML = '';
-				polygonalIdenticonDiv.innerHTML = '';
+				squareIdenticonDiv1.innerHTML = '';
+				circularIdenticonDiv1.innerHTML = '';
+				circularIdenticonDiv2.innerHTML = '';
+				circularIdenticonDiv3.innerHTML = '';
+				polygonalIdenticonDiv1.innerHTML = '';
+				polygonalIdenticonDiv2.innerHTML = '';
+				polygonalIdenticonDiv3.innerHTML = '';
 
-				squareIdenticonDiv.appendChild(squareIdenticonSVG(300, id));
-				circularIdenticonDiv.appendChild(circularIdenticonSVG(300, id));
-				polygonalIdenticonDiv.appendChild(polygonalIdenticonSVG(300, id));
+				squareIdenticonDiv1.appendChild(squareIdenticonSVG(300, id));
+				circularIdenticonDiv1.appendChild(circularIdenticonSVG(300, id));
+				circularIdenticonDiv2.appendChild(circularIdenticonSVG(300, id, {segments: 16}));
+				circularIdenticonDiv3.appendChild(circularIdenticonSVG(300, id, {shells: 5}));
+				polygonalIdenticonDiv1.appendChild(polygonalIdenticonSVG(300, id));
+				polygonalIdenticonDiv2.appendChild(polygonalIdenticonSVG(300, id, {edges: 3}));
+				polygonalIdenticonDiv3.appendChild(polygonalIdenticonSVG(300, id, {shells: 3}));
 			}
 		</script>
 		<style>
 			body {
-				margin-top: 200px;
+				margin-top: 0px;
 
 				display: flex;
 				flex-direction: column;
@@ -34,15 +46,32 @@
 				display: flex;
 				flex-direction: row;
 			}
+
+			#identicons > div {
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-start;
+				align-items: center;
+			}
 		</style>
 	</head>
 
 	<body onload="draw('')">
 		<textarea rows="8" cols="100" style="width: 600px; margin: 100px" oninput="draw(this.value)"></textarea>
 		<div id="identicons">
-			<div id="squareIdenticon"></div>
-			<div id="circularIdenticon"></div>
-			<div id="polygonalIdenticon"></div>
+			<div>
+				<div id="squareIdenticon1"></div>
+			</div>
+			<div>
+				<div id="circularIdenticon1"></div>
+				<div id="circularIdenticon2"></div>
+				<div id="circularIdenticon3"></div>
+			</div>
+			<div>
+				<div id="polygonalIdenticon1"></div>
+				<div id="polygonalIdenticon2"></div>
+				<div id="polygonalIdenticon3"></div>
+			</div>
 		</div>
 	</body>
 </html>
