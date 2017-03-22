@@ -1,12 +1,11 @@
-function squareIdenticonSVG(width, height, id){
+function squareIdenticonSVG(size, id){
 	var idHash = string2ByteArray(md5(id));
-	var size = Math.min(width, height);
 
 	var svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
 
-	svg.setAttribute('width', width);
-	svg.setAttribute('height', height);
+	svg.setAttribute('width', size);
+	svg.setAttribute('height', size);
 	svg.setAttribute('xmlns', svgNS);
 	svg.setAttribute('shape-rendering', 'crispEdges');
 

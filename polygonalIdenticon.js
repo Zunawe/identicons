@@ -1,22 +1,21 @@
-function polygonalIdenticonSVG(width, height, id, edges, shells){
+function polygonalIdenticonSVG(size, id, options){
 	var idHash = string2ByteArray(md5(id));
-	var size = Math.min(width, height);
 
 	var fillColor = "#" + padFront(idHash[13].toString(16), 2) +
 	                padFront(idHash[14].toString(16), 2) +
 	                padFront(idHash[15].toString(16), 2);
 
-	edges = edges || 5;
-	shells = shells || 4;
+	var edges = (options && options['edges']) || 5;
+	var shells = (options && options['shells']) || 4;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
-	var centerx = Math.floor(width / 2);
-	var centery = Math.floor(height / 2);
+	var centerx = Math.floor(size / 2);
+	var centery = Math.floor(size / 2);
 
 	svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
 
-	svg.setAttribute('width', width);
-	svg.setAttribute('height', height);
+	svg.setAttribute('width', size);
+	svg.setAttribute('height', size);
 	svg.setAttribute('xmlns', svgNS);
 	//svg.setAttribute('shape-rendering', 'crispEdges');
 

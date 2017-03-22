@@ -9,8 +9,8 @@ The minified versions already include the contents of md5.min.js, and may be saf
 The functions squareIdenticonSVG(), circularIdenticonSVG(), and polygonalIdenticonSVG() return an SVG element that may be appended to elements via JavaScript.
 ```
 squareIdenticonSVG(width: Number, height: Number, id: String);
-circularIdenticonSVG(width: Number, height: Number, id: String, [shells: Number = 4]);
-polygonalIdenticonSVG(width: Number, height: Number, id: String, [edges: Number = 5], [shells: number = 4]);
+circularIdenticonSVG(width: Number, height: Number, id: String, [options: {shells: Number = 4}]);
+polygonalIdenticonSVG(width: Number, height: Number, id: String, [options: {edges: Number = 5, shells: number = 4}]);
 ```
 
 The included file index.html gives a small example implementation in HTML.
@@ -45,7 +45,7 @@ This style creates a circular icon with so many partially filled rings.
   * Each ring has exactly 1 arc in it.
 
 ### Polygonal
-
+![Polygonal Identicon Example](./examples/poly.png "Poly")
 
 The polygonal option is the most versatile so far. It produces a shell of polygons where some edges are filled and others are empty (similar to circular, but with edges).
 
