@@ -1,12 +1,11 @@
-function squareIdenticonSVG(width, height, id){
+function squareIdenticonSVG(size, id){
 	var idHash = string2ByteArray(md5(id));
-	var size = Math.min(width, height);
 
 	var svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
 
-	svg.setAttribute('width', width);
-	svg.setAttribute('height', height);
+	svg.setAttribute('width', size);
+	svg.setAttribute('height', size);
 	svg.setAttribute('xmlns', svgNS);
 	svg.setAttribute('shape-rendering', 'crispEdges');
 
@@ -44,24 +43,24 @@ function squareIdenticonSVG(width, height, id){
 	return svg;
 }
 
-function circularIdenticonSVG(width, height, id, shells){
+function circularIdenticonSVG(size, id, options){
 	var idHash = string2ByteArray(md5(id));
-	var size = Math.min(width, height);
 
 	var fillColor = "#" + padFront(idHash[13].toString(16), 2) +
 	                padFront(idHash[14].toString(16), 2) +
 	                padFront(idHash[15].toString(16), 2);
 
-	shells = Math.floor(shells) || 4;
+	var shells = (options && options['shells']) || 4;
+	var segments = (options && options['segments']) || Infinity;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
-	var centerx = Math.floor(width / 2);
-	var centery = Math.floor(height / 2);
+	var centerx = Math.floor(size / 2);
+	var centery = Math.floor(size / 2);
 	
 	var svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
 
-	svg.setAttribute('width', width);
-	svg.setAttribute('height', height);
+	svg.setAttribute('width', size);
+	svg.setAttribute('height', size);
 	svg.setAttribute('xmlns', svgNS);
 
 	var innerCircle = document.createElementNS(svgNS, 'circle');
@@ -74,8 +73,8 @@ function circularIdenticonSVG(width, height, id, shells){
 	svg.appendChild(innerCircle);
 
 	for(var i = 1; i < shells; ++i){
-		var theta1 = 360 * (idHash[(i * 2) + 0] / 0xFF);
-		var theta2 = 360 * (idHash[(i * 2) + 1] / 0xFF);
+		var theta1 = floorToMultiple(360 * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
+		var theta2 = floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments)
 
 		if(theta2 < theta1){
 			var temp = theta1;
@@ -88,11 +87,11 @@ function circularIdenticonSVG(width, height, id, shells){
 		
 		var largeArcFlag = (theta2 - theta1) < 180 ? 0 : 1;
 
-		var d = 'M ' + (centerx + polar2CartesianX(r2, theta1)) + ' ' + (centery + polar2CartesianY(r2, theta1)) +
-				' A ' + r2 + ' ' + r2 + ' 0 ' + largeArcFlag + ' 1 ' + (centerx + polar2CartesianX(r2, theta2)) + ' ' + (centery + polar2CartesianY(r2, theta2)) +
-				' L ' + (centerx + polar2CartesianX(r1, theta2)) + ' ' + (centery + polar2CartesianY(r1, theta2)) +
-				' A ' + r1 + ' ' + r1 + ' 0 ' + largeArcFlag + ' 0 ' + (centerx + polar2CartesianX(r1, theta1)) + ' ' + (centery + polar2CartesianY(r1, theta1)) +
-				' Z';
+		var d = `M ${centerx + polar2CartesianX(r2, theta1)} ${centery + polar2CartesianY(r2, theta1)} ` +
+		        `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + polar2CartesianX(r2, theta2)} ${centery + polar2CartesianY(r2, theta2)} ` +
+		        `L ${centerx + polar2CartesianX(r1, theta2)} ${centery + polar2CartesianY(r1, theta2)} ` +
+		        `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + polar2CartesianX(r1, theta1)} ${centery + polar2CartesianY(r1, theta1)} ` +
+		        'Z';
 
 		var arc = document.createElementNS(svgNS, 'path');
 
@@ -105,25 +104,24 @@ function circularIdenticonSVG(width, height, id, shells){
 	return svg;
 }
 
-function polygonalIdenticonSVG(width, height, id, edges, shells){
+function polygonalIdenticonSVG(size, id, options){
 	var idHash = string2ByteArray(md5(id));
-	var size = Math.min(width, height);
 
 	var fillColor = "#" + padFront(idHash[13].toString(16), 2) +
 	                padFront(idHash[14].toString(16), 2) +
 	                padFront(idHash[15].toString(16), 2);
 
-	edges = edges || 5;
-	shells = shells || 4;
+	var edges = (options && options['edges']) || 5;
+	var shells = (options && options['shells']) || 4;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
-	var centerx = Math.floor(width / 2);
-	var centery = Math.floor(height / 2);
+	var centerx = Math.floor(size / 2);
+	var centery = Math.floor(size / 2);
 
 	svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
 
-	svg.setAttribute('width', width);
-	svg.setAttribute('height', height);
+	svg.setAttribute('width', size);
+	svg.setAttribute('height', size);
 	svg.setAttribute('xmlns', svgNS);
 	//svg.setAttribute('shape-rendering', 'crispEdges');
 
@@ -144,11 +142,11 @@ function polygonalIdenticonSVG(width, height, id, edges, shells){
 				var r2 = innerRadius * (i + 1);
 				r2 -= (r2 - r1) / 10;
 
-				var d = 'M ' + (centerx + polar2CartesianX(r2, theta1)) + ' ' + (centery + polar2CartesianY(r2, theta1)) +
-				        ' L ' + (centerx + polar2CartesianX(r2, theta2)) + ' ' + (centery + polar2CartesianY(r2, theta2)) +
-				        ' L ' + (centerx + polar2CartesianX(r1, theta2)) + ' ' + (centery + polar2CartesianY(r1, theta2)) +
-				        ' L ' + (centerx + polar2CartesianX(r1, theta1)) + ' ' + (centery + polar2CartesianY(r1, theta1)) +
-				        ' Z';
+				var d = `M ${centerx + polar2CartesianX(r2, theta1)} ${centery + polar2CartesianY(r2, theta1)} ` +
+				        `L ${centerx + polar2CartesianX(r2, theta2)} ${centery + polar2CartesianY(r2, theta2)} ` +
+				        `L ${centerx + polar2CartesianX(r1, theta2)} ${centery + polar2CartesianY(r1, theta2)} ` +
+				        `L ${centerx + polar2CartesianX(r1, theta1)} ${centery + polar2CartesianY(r1, theta1)} ` +
+				        'Z';
 
 				var edge = document.createElementNS(svgNS, 'path');
 

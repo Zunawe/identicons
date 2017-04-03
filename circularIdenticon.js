@@ -42,11 +42,11 @@ function circularIdenticonSVG(size, id, options){
 		
 		var largeArcFlag = (theta2 - theta1) < 180 ? 0 : 1;
 
-		var d = 'M ' + (centerx + polar2CartesianX(r2, theta1)) + ' ' + (centery + polar2CartesianY(r2, theta1)) +
-				' A ' + r2 + ' ' + r2 + ' 0 ' + largeArcFlag + ' 1 ' + (centerx + polar2CartesianX(r2, theta2)) + ' ' + (centery + polar2CartesianY(r2, theta2)) +
-				' L ' + (centerx + polar2CartesianX(r1, theta2)) + ' ' + (centery + polar2CartesianY(r1, theta2)) +
-				' A ' + r1 + ' ' + r1 + ' 0 ' + largeArcFlag + ' 0 ' + (centerx + polar2CartesianX(r1, theta1)) + ' ' + (centery + polar2CartesianY(r1, theta1)) +
-				' Z';
+		var d = `M ${centerx + polar2CartesianX(r2, theta1)} ${centery + polar2CartesianY(r2, theta1)} ` +
+		        `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + polar2CartesianX(r2, theta2)} ${centery + polar2CartesianY(r2, theta2)} ` +
+		        `L ${centerx + polar2CartesianX(r1, theta2)} ${centery + polar2CartesianY(r1, theta2)} ` +
+		        `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + polar2CartesianX(r1, theta1)} ${centery + polar2CartesianY(r1, theta1)} ` +
+		        'Z';
 
 		var arc = document.createElementNS(svgNS, 'path');
 
