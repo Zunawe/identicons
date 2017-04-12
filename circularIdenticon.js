@@ -7,7 +7,7 @@ function circularIdenticonSVG(size, id, options){
 
 	var shells = (options && options['shells']) || 4;
 	var segments = (options && options['segments']) || Infinity;
-	var symmetric = (options && options['symmetric']) || false;
+	var symmetry = (options && options['symmetry']) || 'none';
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
 	var centerx = Math.floor(size / 2);
 	var centery = Math.floor(size / 2);
@@ -29,10 +29,21 @@ function circularIdenticonSVG(size, id, options){
 	svg.appendChild(innerCircle);
 
 	for(var i = 1; i < shells; ++i){
-		var theta1 = floorToMultiple((symmetric ? 180 : 360) * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
-		var theta2 = symmetric ? (360 - theta1) : floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments);
-
-		console.log([theta1, i])
+		var theta1;
+		var theta2;
+		switch(symmetry){
+			case 'vertical':
+				theta1 = floorToMultiple(180 * (idHash[i] / 0xFF), 360 / segments);
+				theta2 = 360 - theta1;
+				break;
+			case 'horizontal':
+				theta1 = floorToMultiple(180 * (idHash[i] / 0xFF), 360 / segments) - 90;
+				theta2 = 180 - theta1;
+				break;
+			default:
+				theta1 = floorToMultiple(360 * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
+				theta2 = floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments);
+		}
 
 		if(theta2 < theta1){
 			var temp = theta1;
