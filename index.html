@@ -6,30 +6,63 @@
 		<script src="circularIdenticon.js"></script>
 		<script src="polygonalIdenticon.js"></script>
 		<script>
-			function draw(id){
-				var squareIdenticonDiv1 = document.getElementById('squareIdenticon1');
-				var circularIdenticonDiv1 = document.getElementById('circularIdenticon1');
-				var circularIdenticonDiv2 = document.getElementById('circularIdenticon2');
-				var circularIdenticonDiv3 = document.getElementById('circularIdenticon3');
-				var polygonalIdenticonDiv1 = document.getElementById('polygonalIdenticon1');
-				var polygonalIdenticonDiv2 = document.getElementById('polygonalIdenticon2');
-				var polygonalIdenticonDiv3 = document.getElementById('polygonalIdenticon3');
+			function draw(){
+				var typeSelect = document.getElementById('identiconType');
+				switch(typeSelect.options[typeSelect.selectedIndex].value){
+					case 'square':
+						document.getElementById('shellFieldDiv').style.display = 'none';
+						document.getElementById('segmentFieldDiv').style.display = 'none';
+						document.getElementById('symmetryFieldDiv').style.display = 'none';
+						document.getElementById('edgesFieldDiv').style.display = 'none';
+						drawSquare();
+						break;
+					case 'circular':
+						document.getElementById('shellFieldDiv').style.display = 'inline';
+						document.getElementById('segmentFieldDiv').style.display = 'inline';
+						document.getElementById('symmetryFieldDiv').style.display = 'inline';
+						document.getElementById('edgesFieldDiv').style.display = 'none';
+						drawCircular();
+						break;
+					case 'polygonal':
+						document.getElementById('shellFieldDiv').style.display = 'inline';
+						document.getElementById('segmentFieldDiv').style.display = 'none';
+						document.getElementById('symmetryFieldDiv').style.display = 'none';
+						document.getElementById('edgesFieldDiv').style.display = 'inline';
+						drawPolygonal();
+						break;
+				}
+			}
 
-				squareIdenticonDiv1.innerHTML = '';
-				circularIdenticonDiv1.innerHTML = '';
-				circularIdenticonDiv2.innerHTML = '';
-				circularIdenticonDiv3.innerHTML = '';
-				polygonalIdenticonDiv1.innerHTML = '';
-				polygonalIdenticonDiv2.innerHTML = '';
-				polygonalIdenticonDiv3.innerHTML = '';
+			function drawSquare(){
+				var identicon = document.getElementById('identicon');
+				identicon.innerHTML = '';
+				identicon.appendChild(squareIdenticonSVG(300, document.getElementById('textInput').value));
+			}
 
-				squareIdenticonDiv1.appendChild(squareIdenticonSVG(200, id));
-				circularIdenticonDiv1.appendChild(circularIdenticonSVG(200, id));
-				circularIdenticonDiv2.appendChild(circularIdenticonSVG(200, id, {segments: 8}));
-				circularIdenticonDiv3.appendChild(circularIdenticonSVG(200, id, {shells: 5}));
-				polygonalIdenticonDiv1.appendChild(polygonalIdenticonSVG(200, id));
-				polygonalIdenticonDiv2.appendChild(polygonalIdenticonSVG(200, id, {edges: 3}));
-				polygonalIdenticonDiv3.appendChild(polygonalIdenticonSVG(200, id, {shells: 3}));
+			function drawCircular(){
+				var options = {};
+				var shellCount = document.getElementById('shellField').value;
+				var segmentCount = document.getElementById('segmentField').value;
+				var symmetry = document.getElementById('symmetryField').value || undefined;
+				options.shells = shellCount;
+				options.segments = segmentCount;
+				options.symmetryAxisTilt = symmetry;
+
+				var identicon = document.getElementById('identicon');
+				identicon.innerHTML = '';
+				identicon.appendChild(circularIdenticonSVG(300, document.getElementById('textInput').value, options));
+			}
+
+			function drawPolygonal(){
+				var options = {};
+				var shellCount = document.getElementById('shellField').value;
+				var edgesCount = document.getElementById('edgesField').value;
+				options.shells = shellCount;
+				options.edges = edgesCount;
+
+				var identicon = document.getElementById('identicon');
+				identicon.innerHTML = '';
+				identicon.appendChild(polygonalIdenticonSVG(300, document.getElementById('textInput').value, options));
 			}
 		</script>
 		<style>
@@ -42,36 +75,28 @@
 				align-items: center;
 			}
 
-			#identicons {
-				display: flex;
-				flex-direction: row;
-			}
-
-			#identicons > div {
+			#form {
+				margin: 100px;
 				display: flex;
 				flex-direction: column;
-				justify-content: flex-start;
 				align-items: center;
 			}
 		</style>
 	</head>
 
-	<body onload="draw('')">
-		<textarea rows="8" cols="100" style="width: 600px; margin: 100px" oninput="draw(this.value)"></textarea>
-		<div id="identicons">
-			<div>
-				<div id="squareIdenticon1"></div>
-			</div>
-			<div>
-				<div id="circularIdenticon1"></div>
-				<div id="circularIdenticon2"></div>
-				<div id="circularIdenticon3"></div>
-			</div>
-			<div>
-				<div id="polygonalIdenticon1"></div>
-				<div id="polygonalIdenticon2"></div>
-				<div id="polygonalIdenticon3"></div>
-			</div>
-		</div>
+	<body onload="draw()">
+		<form id="form" oninput=draw()>
+			<select id="identiconType">
+				<option value="square">Square</option>
+				<option value="circular">Circular</option>
+				<option value="polygonal">Polygonal</option>
+			</select>
+			<div id="shellFieldDiv">Shells: <input id="shellField" type="number" /></div>
+			<div id="segmentFieldDiv">Segments: <input id="segmentField" type="number" /></div>
+			<div id="symmetryFieldDiv">Symmetric Axis Angle: <input id="symmetryField" type="number" /></div>
+			<div id="edgesFieldDiv">Edges: <input id="edgesField" type="number" /></div>
+			<textarea id="textInput" rows="4" cols="50"></textarea>
+		</form>
+		<div id="identicon"></div>
 	</body>
 </html>
