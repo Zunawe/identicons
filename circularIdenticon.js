@@ -7,8 +7,7 @@ function circularIdenticonSVG(size, id, options){
 
 	var shells = (options && options['shells']) || 4;
 	var segments = (options && options['segments']) || Infinity;
-	var symmetry = (options && options['symmetry']) || '';
-	symmetry = ['vertical', 'v', 'horizontal', 'h'].includes(symmetry) ? symmetry : '';
+	var symmetryAxisTilt = options && Number(options['symmetryAxisTilt']) % 180;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
 	var centerx = Math.floor(size / 2);
 	var centery = Math.floor(size / 2);
@@ -53,25 +52,15 @@ function circularIdenticonSVG(size, id, options){
 		}
 
 		var arc = document.createElementNS(svgNS, 'path');
-
 		arc.setAttribute('d', getArcPath(i, theta1, theta2));
 		arc.setAttribute('fill', fillColor);
-
 		svg.appendChild(arc);
 
-		if(symmetry){
+		if(isFinite(symmetryAxisTilt)){
 			var temp = theta1;
-			switch(symmetry){
-				case 'vertical':
-				case 'v':
-					theta1 = 360 - theta2;
-					theta2 = 360 - temp;
-					break;
-				case 'horizontal':
-				case 'h':
-					theta1 = 180 - theta2;
-					theta2 = 180 - temp;
-			}
+			theta1 = (symmetryAxisTilt * 2) - theta2;
+			theta2 = (symmetryAxisTilt * 2) - temp;
+
 			arc = document.createElementNS(svgNS, 'path');
 			arc.setAttribute('d', getArcPath(i, theta1, theta2));
 			arc.setAttribute('fill', fillColor);

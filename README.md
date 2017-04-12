@@ -30,6 +30,8 @@ circularIdenticonSVG(size, id, [options]);
     * The number of shells to create (including the inner circle)
   * **segments**: *number* = Infinity
     * Separates each shell into the provided number of segments, effectively snapping the edges of each arc to certain angles. Lower numbers increase the size of the smallest possible arclength, but provide slightly less overall variation (not enough to cause frequent collisions)
+  * **symmetricAxisTilt**: *number*
+    * Simultaneously forces the identicon to be symmetric across a single axis and sets the angle of this axis in degrees. (NOTE: This is not the same thing as rotating the identicon. It will look different at each angle mod 180).
 
 ### Polygonal
 ```
