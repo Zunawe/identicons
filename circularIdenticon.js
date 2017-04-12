@@ -7,7 +7,8 @@ function circularIdenticonSVG(size, id, options){
 
 	var shells = (options && options['shells']) || 4;
 	var segments = (options && options['segments']) || Infinity;
-	var symmetry = (options && options['symmetry']) || 'none';
+	var symmetry = (options && options['symmetry']) || '';
+	symmetry = ['vertical', 'v', 'horizontal', 'h'].includes(symmetry) ? symmetry : '';
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
 	var centerx = Math.floor(size / 2);
 	var centery = Math.floor(size / 2);
@@ -29,21 +30,21 @@ function circularIdenticonSVG(size, id, options){
 	svg.appendChild(innerCircle);
 
 	for(var i = 1; i < shells; ++i){
-		var theta1;
-		var theta2;
-		switch(symmetry){
-			case 'vertical':
-				theta1 = floorToMultiple(180 * (idHash[i] / 0xFF), 360 / segments);
-				theta2 = 360 - theta1;
-				break;
-			case 'horizontal':
-				theta1 = floorToMultiple(180 * (idHash[i] / 0xFF), 360 / segments) - 90;
-				theta2 = 180 - theta1;
-				break;
-			default:
-				theta1 = floorToMultiple(360 * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
-				theta2 = floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments);
+		var getArcPath = function (shell, theta1, theta2){
+			var r1 = innerRadius * shell;
+			var r2 = innerRadius * (i + 1) + 1;
+
+			var largeArcFlag = (theta2 - theta1) < 180 ? 0 : 1;
+
+			return `M ${centerx + polar2CartesianX(r2, theta1)} ${centery + polar2CartesianY(r2, theta1)} ` +
+			       `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + polar2CartesianX(r2, theta2)} ${centery + polar2CartesianY(r2, theta2)} ` +
+			       `L ${centerx + polar2CartesianX(r1, theta2)} ${centery + polar2CartesianY(r1, theta2)} ` +
+			       `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + polar2CartesianX(r1, theta1)} ${centery + polar2CartesianY(r1, theta1)} ` +
+			       'Z';
 		}
+
+		var theta1 = floorToMultiple(360 * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
+		var theta2 = floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments);
 
 		if(theta2 < theta1){
 			var temp = theta1;
@@ -51,23 +52,31 @@ function circularIdenticonSVG(size, id, options){
 			theta2 = temp;
 		}
 
-		var r1 = innerRadius * i;
-		var r2 = innerRadius * (i + 1) + 1;
-		
-		var largeArcFlag = (theta2 - theta1) < 180 ? 0 : 1;
-
-		var d = `M ${centerx + polar2CartesianX(r2, theta1)} ${centery + polar2CartesianY(r2, theta1)} ` +
-		        `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + polar2CartesianX(r2, theta2)} ${centery + polar2CartesianY(r2, theta2)} ` +
-		        `L ${centerx + polar2CartesianX(r1, theta2)} ${centery + polar2CartesianY(r1, theta2)} ` +
-		        `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + polar2CartesianX(r1, theta1)} ${centery + polar2CartesianY(r1, theta1)} ` +
-		        'Z';
-
 		var arc = document.createElementNS(svgNS, 'path');
 
-		arc.setAttribute('d', d);
+		arc.setAttribute('d', getArcPath(i, theta1, theta2));
 		arc.setAttribute('fill', fillColor);
 
 		svg.appendChild(arc);
+
+		if(symmetry){
+			var temp = theta1;
+			switch(symmetry){
+				case 'vertical':
+				case 'v':
+					theta1 = 360 - theta2;
+					theta2 = 360 - temp;
+					break;
+				case 'horizontal':
+				case 'h':
+					theta1 = 180 - theta2;
+					theta2 = 180 - temp;
+			}
+			arc = document.createElementNS(svgNS, 'path');
+			arc.setAttribute('d', getArcPath(i, theta1, theta2));
+			arc.setAttribute('fill', fillColor);
+			svg.appendChild(arc);
+		}
 	}
 
 	return svg;
