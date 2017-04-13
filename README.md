@@ -27,7 +27,7 @@ circularIdenticonSVG(size, id, [options]);
   * The id to be hashed for this identicon
 * **options**: *object* (optional)
   * **shells**: *number* = 4
-    * The number of shells to create (including the inner circle)
+    * The number of shells to create (including the inner circle). (Max 8)
   * **segments**: *number* = Infinity
     * Separates each shell into the provided number of segments, effectively snapping the edges of each arc to certain angles. Lower numbers increase the size of the smallest possible arclength, but provide slightly less overall variation (not enough to cause frequent collisions)
   * **symmetricAxisTilt**: *number*

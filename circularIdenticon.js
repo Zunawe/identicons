@@ -6,6 +6,7 @@ function circularIdenticonSVG(size, id, options){
 	                padFront(idHash[15].toString(16), 2);
 
 	var shells = (options && options['shells']) || 4;
+	shells = Math.min(shells, 8);
 	var segments = (options && options['segments']) || Infinity;
 	var symmetryAxisTilt = options && Number(options['symmetryAxisTilt']) % 180;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
