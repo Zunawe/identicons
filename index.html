@@ -10,24 +10,24 @@
 				var typeSelect = document.getElementById('identiconType');
 				switch(typeSelect.options[typeSelect.selectedIndex].value){
 					case 'square':
-						document.getElementById('shellFieldDiv').style.display = 'none';
-						document.getElementById('segmentFieldDiv').style.display = 'none';
-						document.getElementById('symmetryFieldDiv').style.display = 'none';
-						document.getElementById('edgesFieldDiv').style.display = 'none';
+						document.getElementById('shellFieldContainer').style.display = 'none';
+						document.getElementById('segmentFieldContainer').style.display = 'none';
+						document.getElementById('symmetryFieldContainer').style.display = 'none';
+						document.getElementById('edgesFieldContainer').style.display = 'none';
 						drawSquare();
 						break;
 					case 'circular':
-						document.getElementById('shellFieldDiv').style.display = 'inline';
-						document.getElementById('segmentFieldDiv').style.display = 'inline';
-						document.getElementById('symmetryFieldDiv').style.display = 'inline';
-						document.getElementById('edgesFieldDiv').style.display = 'none';
+						document.getElementById('shellFieldContainer').style.display = 'table-row';
+						document.getElementById('segmentFieldContainer').style.display = 'table-row';
+						document.getElementById('symmetryFieldContainer').style.display = 'table-row';
+						document.getElementById('edgesFieldContainer').style.display = 'none';
 						drawCircular();
 						break;
 					case 'polygonal':
-						document.getElementById('shellFieldDiv').style.display = 'inline';
-						document.getElementById('segmentFieldDiv').style.display = 'none';
-						document.getElementById('symmetryFieldDiv').style.display = 'none';
-						document.getElementById('edgesFieldDiv').style.display = 'inline';
+						document.getElementById('shellFieldContainer').style.display = 'table-row';
+						document.getElementById('segmentFieldContainer').style.display = 'none';
+						document.getElementById('symmetryFieldContainer').style.display = 'none';
+						document.getElementById('edgesFieldContainer').style.display = 'table-row';
 						drawPolygonal();
 						break;
 				}
@@ -91,10 +91,24 @@
 				<option value="circular">Circular</option>
 				<option value="polygonal">Polygonal</option>
 			</select>
-			<div id="shellFieldDiv">Shells: <input id="shellField" type="number" /></div>
-			<div id="segmentFieldDiv">Segments: <input id="segmentField" type="number" /></div>
-			<div id="symmetryFieldDiv">Symmetric Axis Angle: <input id="symmetryField" type="number" /></div>
-			<div id="edgesFieldDiv">Edges: <input id="edgesField" type="number" /></div>
+			<table style="table-layout: fixed;">
+				<tr id="shellFieldContainer">
+					<td>Shells:</td>
+					<td><input id="shellField" size="4" type="number" /></td>
+				</tr>
+				<tr id="segmentFieldContainer">
+					<td>Segments:</td>
+					<td><input id="segmentField" size="4" type="number" /></td>
+				</tr>
+				<tr id="symmetryFieldContainer">
+					<td>Symmetric Axis Angle:</td>
+					<td><input id="symmetryField" size="4" type="number" /></td>
+				</tr>
+				<tr id="edgesFieldContainer">
+					<td>Edges:</td>
+					<td><input id="edgesField" size="4" type="number" /></td>
+				</tr>
+			</table>
 			<textarea id="textInput" rows="4" cols="50"></textarea>
 		</form>
 		<div id="identicon"></div>
