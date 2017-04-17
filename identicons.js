@@ -1,5 +1,5 @@
-function squareIdenticonSVG(size, id){
-	var idHash = string2ByteArray(md5(id));
+function squareIdenticonSVG(size, id, hashFunction){
+	var idHash = string2ByteArray(hashFunction(id));
 
 	var svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
@@ -18,9 +18,9 @@ function squareIdenticonSVG(size, id){
 		pixelMap[i][4] = pixelMap[i][0];
 	}
 
-	var fillColor = '#' + padFront(idHash[13].toString(16), 2) +
-	                padFront(idHash[14].toString(16), 2) +
-	                padFront(idHash[15].toString(16), 2);
+	var fillColor = '#' + idHash[idHash.length - 3].padFront(16, 2) +
+	                      idHash[idHash.length - 2].padFront(16, 2) +
+	                      idHash[idHash.length - 1].padFront(16, 2);
 	var boxSize = Math.floor(size / 6);
 	var marginSize = Math.floor((boxSize / 2) + ((size % 6) / 2));
 
@@ -43,12 +43,12 @@ function squareIdenticonSVG(size, id){
 	return svg;
 }
 
-function circularIdenticonSVG(size, id, options){
-	var idHash = string2ByteArray(md5(id));
+function circularIdenticonSVG(size, id, hashFunction, options){
+	var idHash = string2ByteArray(hashFunction(id));
 
-	var fillColor = "#" + padFront(idHash[13].toString(16), 2) +
-	                padFront(idHash[14].toString(16), 2) +
-	                padFront(idHash[15].toString(16), 2);
+	var fillColor = "#" + idHash[idHash.length - 3].padFront(16, 2) +
+	                      idHash[idHash.length - 2].padFront(16, 2) +
+	                      idHash[idHash.length - 1].padFront(16, 2);
 
 	var shells = (options && options['shells']) || 4;
 	shells = Math.min(shells, 8);
@@ -117,12 +117,12 @@ function circularIdenticonSVG(size, id, options){
 	return svg;
 }
 
-function polygonalIdenticonSVG(size, id, options){
-	var idHash = string2ByteArray(md5(id));
+function polygonalIdenticonSVG(size, id, hashFunction, options){
+	var idHash = string2ByteArray(hashFunction(id));
 
-	var fillColor = "#" + padFront(idHash[13].toString(16), 2) +
-	                padFront(idHash[14].toString(16), 2) +
-	                padFront(idHash[15].toString(16), 2);
+	var fillColor = "#" + idHash[idHash.length - 3].padFront(16, 2) +
+	                      idHash[idHash.length - 3].padFront(16, 2) +
+	                      idHash[idHash.length - 3].padFront(16, 2);
 
 	var edges = (options && options['edges']) || 5;
 	var shells = (options && options['shells']) || 4;
@@ -206,4 +206,12 @@ function getBit(n, bytes){
 	var bitIndex = 7 - ((n % (8 * bytes.length)) - (byteIndex * 8));
 
 	return (bytes[byteIndex] & (0x01 << bitIndex)) >> bitIndex;
+}
+
+Number.prototype.padFront = function (base, size){
+	var s = this.toString(base);
+	while(s.length < size){
+		s = '0' + s;
+	}
+	return s;
 }
