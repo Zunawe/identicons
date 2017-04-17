@@ -45,7 +45,7 @@ function squareIdenticonSVG(size, id, hashFunction){
 
 function string2ByteArray(string){
 	var bytes = [];
-	for(var i = 0; i < string.length; ++i){
+	for(var i = 0; i < string.length / 2; ++i){
 		bytes[i] = parseInt(string.substr(i * 2, 2), 16);
 	}
 	return bytes;
