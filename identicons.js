@@ -51,6 +51,7 @@ function circularIdenticonSVG(size, id, options){
 	                padFront(idHash[15].toString(16), 2);
 
 	var shells = (options && options['shells']) || 4;
+	shells = Math.min(shells, 8);
 	var segments = (options && options['segments']) || Infinity;
 	var symmetryAxisTilt = options && Number(options['symmetryAxisTilt']) % 180;
 	var innerRadius = Math.floor(size / ((shells * 2) + 1));
@@ -189,6 +190,15 @@ function polar2CartesianX(r, theta){
 function polar2CartesianY(r, theta){
 	var radians = Math.PI * (theta - 90) / 180;
 	return r * Math.sin(radians);
+}
+
+function floorToMultiple(n, m){
+	if(!m){
+		return n;
+	}
+	n /= m;
+	n = Math.floor(n);
+	return n * m;
 }
 
 function getBit(n, bytes){

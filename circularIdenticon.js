@@ -43,7 +43,6 @@ function circularIdenticonSVG(size, id, options){
 			       'Z';
 		}
 
-		// TODO: Fix idHash for bigger than 8
 		var theta1 = floorToMultiple(360 * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
 		var theta2 = floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments);
 
