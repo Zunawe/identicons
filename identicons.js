@@ -24,18 +24,17 @@
 /**
  * @callback hasher
  * @param {String} input - The string to be hashed
- * @return {String} - A string in hexadecimal of some hash
+ * @return {String} A string in hexadecimal of some hash
  */
 
 /**
  * Turns an id and a hashing function into a unique square identicon SVG element
  * @param {Number} - Side length in pixels of the image
- * @param {String} id - The id to be hashed
- * @param {hasher} hashFunction - A function that hashes strings (e.g. md5, sha-1, etc...)
- * @return {Object} - An SVG element object
+ * @param {String} hash - A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
+ * @return {Object} An SVG element object
  */
-function squareIdenticonSVG(size, id, hashFunction){
-	var idHash = string2ByteArray(hashFunction(id.toString()));
+function squareIdenticonSVG(size, hash){
+	var bytes = _string2ByteArray(hash);
 
 	var svgNS = 'http://www.w3.org/2000/svg';
 	var svg = document.createElementNS(svgNS, 'svg');
@@ -50,15 +49,15 @@ function squareIdenticonSVG(size, id, hashFunction){
 	var pixelMap = [[], [], [], [], []];
 	for(var i = 0; i < 5; ++i){
 		for(var j = 0; j < 3; ++j){
-			pixelMap[i][j] = !getBit((i * 3) + j, idHash);
+			pixelMap[i][j] = !_getBit((i * 3) + j, bytes);
 		}
 		pixelMap[i][3] = pixelMap[i][1];
 		pixelMap[i][4] = pixelMap[i][0];
 	}
 
-	var fillColor = '#' + idHash[idHash.length - 3].padFront(16, 2) +
-	                      idHash[idHash.length - 2].padFront(16, 2) +
-	                      idHash[idHash.length - 1].padFront(16, 2);
+	var fillColor = '#' + bytes[bytes.length - 3].padFront(16, 2) +
+	                      bytes[bytes.length - 2].padFront(16, 2) +
+	                      bytes[bytes.length - 1].padFront(16, 2);
 	var boxSize = Math.floor(size / 6);
 	var marginSize = Math.floor((boxSize / 2) + ((size % 6) / 2));
 
@@ -84,20 +83,19 @@ function squareIdenticonSVG(size, id, hashFunction){
 /**
  * Turns an id and a hashing function into a unique square identicon SVG element
  * @param {Number} - Side length in pixels of the image
- * @param {String} id - The id to be hashed
- * @param {hasher} hashFunction - A function that hashes strings (e.g. md5, sha-1, etc...)
+ * @param {String} hash - A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
  * @param {Object} [options] - An object containing options for customizing the identicon
  * @param {Number} [options.shells=4] - The number of shells to generate (min 1, max 8)
  * @param {Number} [options.segments=Infinity] - The number of segments of equal angle to snap the arcs to
  * @param {Number} [options.symmetryAxisTilt] - If defined, makes the SVG symmetric about the line defined here in polar coordinates (degrees)
- * @return {Object} - An SVG element object
+ * @return {Object} An SVG element object
  */
-function circularIdenticonSVG(size, id, hashFunction, options){
-	var idHash = string2ByteArray(hashFunction(id));
+function circularIdenticonSVG(size, hash, options){
+	var bytes = _string2ByteArray(hashFunction(id));
 
-	var fillColor = "#" + idHash[idHash.length - 3].padFront(16, 2) +
-	                      idHash[idHash.length - 2].padFront(16, 2) +
-	                      idHash[idHash.length - 1].padFront(16, 2);
+	var fillColor = "#" + bytes[bytes.length - 3].padFront(16, 2) +
+	                      bytes[bytes.length - 2].padFront(16, 2) +
+	                      bytes[bytes.length - 1].padFront(16, 2);
 
 	var shells = (options && options['shells']) || 4;
 	shells = Math.min(shells, 8);
@@ -130,7 +128,7 @@ function circularIdenticonSVG(size, id, hashFunction, options){
 		 * @param {Number} shell - The shell to draw the arc for (affects radii)
 		 * @param {Number} theta1 - The starting angle for drawing the arc (0, 360) (degrees)
 		 * @param {Number} theta1 - The end angle for drawing the arc, theta2 > theta1 (0, 360) (degrees)
-		 * @return {String} - A string containing the value of the d attribute for the path element
+		 * @return {String} A string containing the value of the d attribute for the path element
 		 */
 		var getArcPath = function (shell, theta1, theta2){
 			var r1 = innerRadius * shell;
@@ -138,16 +136,16 @@ function circularIdenticonSVG(size, id, hashFunction, options){
 
 			var largeArcFlag = (theta2 - theta1) < 180 ? 0 : 1;
 
-			return `M ${centerx + polar2CartesianX(r2, theta1)} ${centery + polar2CartesianY(r2, theta1)} ` +
-			       `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + polar2CartesianX(r2, theta2)} ${centery + polar2CartesianY(r2, theta2)} ` +
-			       `L ${centerx + polar2CartesianX(r1, theta2)} ${centery + polar2CartesianY(r1, theta2)} ` +
-			       `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + polar2CartesianX(r1, theta1)} ${centery + polar2CartesianY(r1, theta1)} ` +
+			return `M ${centerx + _polar2CartesianX(r2, theta1)} ${centery + _polar2CartesianY(r2, theta1)} ` +
+			       `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + _polar2CartesianX(r2, theta2)} ${centery + _polar2CartesianY(r2, theta2)} ` +
+			       `L ${centerx + _polar2CartesianX(r1, theta2)} ${centery + _polar2CartesianY(r1, theta2)} ` +
+			       `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + _polar2CartesianX(r1, theta1)} ${centery + _polar2CartesianY(r1, theta1)} ` +
 			       'Z';
 		}
 
-		// Using floorToMultiple snaps the angles for segmenting
-		var theta1 = floorToMultiple(360 * (idHash[(i * 2) + 0] / 0xFF), 360 / segments);
-		var theta2 = floorToMultiple(360 * (idHash[(i * 2) + 1] / 0xFF), 360 / segments);
+		// Using _floorToMultiple snaps the angles for segmenting
+		var theta1 = _floorToMultiple(360 * (bytes[(i * 2) + 0] / 0xFF), 360 / segments);
+		var theta2 = _floorToMultiple(360 * (bytes[(i * 2) + 1] / 0xFF), 360 / segments);
 
 		if(theta2 < theta1){
 			var temp = theta1;
@@ -178,19 +176,18 @@ function circularIdenticonSVG(size, id, hashFunction, options){
 /**
  * Turns an id and a hashing function into a unique square identicon SVG element
  * @param {Number} - Side length in pixels of the image
- * @param {String} id - The id to be hashed
- * @param {hasher} hashFunction - A function that hashes strings (e.g. md5, sha-1, etc...)
+ * @param {String} hash - A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
  * @param {Object} [options] - An object containing options for customizing the identicon
  * @param {Number} [options.shells=4] - The number of shells to generate (min 1, max 8)
  * @param {Number} [options.edges=5] - The number of edges (i.e. 6 makes a regular hexagon shape)
- * @return {Object} - An SVG element object
+ * @return {Object} An SVG element object
  */
-function polygonalIdenticonSVG(size, id, hashFunction, options){
-	var idHash = string2ByteArray(hashFunction(id));
+function polygonalIdenticonSVG(size, hash, options){
+	var bytes = _string2ByteArray(hashFunction(id));
 
-	var fillColor = "#" + idHash[idHash.length - 3].padFront(16, 2) +
-	                      idHash[idHash.length - 2].padFront(16, 2) +
-	                      idHash[idHash.length - 1].padFront(16, 2);
+	var fillColor = "#" + bytes[bytes.length - 3].padFront(16, 2) +
+	                      bytes[bytes.length - 2].padFront(16, 2) +
+	                      bytes[bytes.length - 1].padFront(16, 2);
 
 	var edges = (options && options['edges']) || 5;
 	var shells = (options && options['shells']) || 4;
@@ -212,7 +209,7 @@ function polygonalIdenticonSVG(size, id, hashFunction, options){
 	// Loop fills pieces for each shell
 	for(var i = 0; i < shells; ++i){
 		for(var j = 0; j < edges; ++j){
-			if(!i || getBit(((i * shells) + j) % idHash.length, idHash)){
+			if(!i || _getBit(((i * shells) + j) % bytes.length, bytes)){
 				// Angles are used to determine the locations of the vertices
 				var theta1 = (360 / edges) * j;
 				var theta2 = (360 / edges) * (j + 1);
@@ -228,10 +225,10 @@ function polygonalIdenticonSVG(size, id, hashFunction, options){
 				r2 -= (r2 - r1) / 10;
 
 				// See MDN documentation on the SVG path element's d attribute
-				var d = `M ${centerx + polar2CartesianX(r2, theta1)} ${centery + polar2CartesianY(r2, theta1)} ` +
-				        `L ${centerx + polar2CartesianX(r2, theta2)} ${centery + polar2CartesianY(r2, theta2)} ` +
-				        `L ${centerx + polar2CartesianX(r1, theta2)} ${centery + polar2CartesianY(r1, theta2)} ` +
-				        `L ${centerx + polar2CartesianX(r1, theta1)} ${centery + polar2CartesianY(r1, theta1)} ` +
+				var d = `M ${centerx + _polar2CartesianX(r2, theta1)} ${centery + _polar2CartesianY(r2, theta1)} ` +
+				        `L ${centerx + _polar2CartesianX(r2, theta2)} ${centery + _polar2CartesianY(r2, theta2)} ` +
+				        `L ${centerx + _polar2CartesianX(r1, theta2)} ${centery + _polar2CartesianY(r1, theta2)} ` +
+				        `L ${centerx + _polar2CartesianX(r1, theta1)} ${centery + _polar2CartesianY(r1, theta1)} ` +
 				        'Z';
 
 				var edge = document.createElementNS(svgNS, 'path');
@@ -249,10 +246,11 @@ function polygonalIdenticonSVG(size, id, hashFunction, options){
 
 /**
  * Turns a string of hexadecimal into an array of byte-sized numbers
+ * @access private
  * @param {String} string - The input to convert
- * @return {Number[]} - An array with size half the length of the input string
+ * @return {Number[]} An array with size half the length of the input string
  */
-function string2ByteArray(string){
+function _string2ByteArray(string){
 	var bytes = [];
 	for(var i = 0; i < string.length / 2; ++i){
 		bytes[i] = parseInt(string.substr(i * 2, 2), 16);
@@ -262,33 +260,36 @@ function string2ByteArray(string){
 
 /**
  * Gets the x-coordinate in Cartesian coordinates from polar coordinates
+ * @access private
  * @param {Number} r - The distance from the origin
  * @param {Number} theta - The angle from the reference axis in degrees
  * @return {Number}
  */
-function polar2CartesianX(r, theta){
+function _polar2CartesianX(r, theta){
 	var radians = Math.PI * (theta - 90) / 180;
 	return r * Math.cos(radians);
 }
 
 /**
  * Gets the y-coordinate in Cartesian coordinates from polar coordinates
+ * @access private
  * @param {Number} r - The distance from the origin
  * @param {Number} theta - The angle from the reference axis in degrees
  * @return {Number}
  */
-function polar2CartesianY(r, theta){
+function _polar2CartesianY(r, theta){
 	var radians = Math.PI * (theta - 90) / 180;
 	return r * Math.sin(radians);
 }
 
 /**
  * Used to segment arcs. Reduces a number to a multiple of some other number
+ * @access private
  * @param {Number} n - The number to floor
  * @param {Number} m - The number to floor to a multiple of
- * @return {Number} - Multiple of m closest to but not greater than n
+ * @return {Number} Multiple of m closest to but not greater than n
  */
-function floorToMultiple(n, m){
+function _floorToMultiple(n, m){
 	if(!m){
 		return n;
 	}
@@ -299,11 +300,12 @@ function floorToMultiple(n, m){
 
 /**
  * Gets the nth bit from an array of bytes
+ * @access private
  * @param {Number} n - The index of the bit (0 is the lowest-order bit, 8 is the first bit of the second byte, etc...)
  * @param {Number[]} bytes - The array of bytes to look through
- * @return {Number} - 0 or 1
+ * @return {Number} 0 or 1
  */
-function getBit(n, bytes){
+function _getBit(n, bytes){
 	var byteIndex = Math.floor(n / 8) % bytes.length;
 	var bitIndex = 7 - ((n % (8 * bytes.length)) - (byteIndex * 8));
 
