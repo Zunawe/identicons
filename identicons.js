@@ -85,7 +85,7 @@ function squareIdenticonSVG(size, hash){
  * @return {Object} An SVG element object
  */
 function circularIdenticonSVG(size, hash, options){
-	var bytes = _string2ByteArray(hashFunction(id));
+	var bytes = _string2ByteArray(hash);
 
 	var fillColor = "#" + bytes[bytes.length - 3].padFront(16, 2) +
 	                      bytes[bytes.length - 2].padFront(16, 2) +
@@ -177,7 +177,7 @@ function circularIdenticonSVG(size, hash, options){
  * @return {Object} An SVG element object
  */
 function polygonalIdenticonSVG(size, hash, options){
-	var bytes = _string2ByteArray(hashFunction(id));
+	var bytes = _string2ByteArray(hash);
 
 	var fillColor = "#" + bytes[bytes.length - 3].padFront(16, 2) +
 	                      bytes[bytes.length - 2].padFront(16, 2) +
