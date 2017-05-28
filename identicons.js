@@ -22,12 +22,6 @@
  */
 
 /**
- * @callback hasher
- * @param {String} input - The string to be hashed
- * @return {String} A string in hexadecimal of some hash
- */
-
-/**
  * Turns an id and a hashing function into a unique square identicon SVG element
  * @param {Number} - Side length in pixels of the image
  * @param {String} hash - A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
