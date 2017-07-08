@@ -23,7 +23,7 @@
 
 /**
  * Turns an id and a hashing function into a unique square identicon SVG element
- * @param {Number} - Side length in pixels of the image
+ * @param {Number} size - Side length in pixels of the image
  * @param {String} hash - A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
  * @return {Object} An SVG element object
  */
@@ -43,7 +43,7 @@ function squareIdenticonSVG(size, hash){
 	var pixelMap = [[], [], [], [], []];
 	for(var i = 0; i < 5; ++i){
 		for(var j = 0; j < 3; ++j){
-			pixelMap[i][j] = !_getBit((i * 3) + j, bytes);
+			pixelMap[i][j] = !!_getBit((i * 3) + j, bytes);
 		}
 		pixelMap[i][3] = pixelMap[i][1];
 		pixelMap[i][4] = pixelMap[i][0];
@@ -76,7 +76,7 @@ function squareIdenticonSVG(size, hash){
 
 /**
  * Turns an id and a hashing function into a unique square identicon SVG element
- * @param {Number} - Side length in pixels of the image
+ * @param {Number} size - Side length in pixels of the image
  * @param {String} hash - A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
  * @param {Object} [options] - An object containing options for customizing the identicon
  * @param {Number} [options.shells=4] - The number of shells to generate (min 1, max 8)
@@ -169,7 +169,7 @@ function circularIdenticonSVG(size, hash, options){
 
 /**
  * Turns an id and a hashing function into a unique square identicon SVG element
- * @param {Number} - Side length in pixels of the image
+ * @param {Number} size - Side length in pixels of the image
  * @param {String} hash - A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
  * @param {Object} [options] - An object containing options for customizing the identicon
  * @param {Number} [options.shells=4] - The number of shells to generate (min 1, max 8)

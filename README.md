@@ -1,30 +1,34 @@
 # Identicons
 While the GitHub-style identicons are well-designed and widely implemented, they're square. And while this is perfectly acceptable in many designs, variety in choice is never a bad thing. This project aims to apply the simplicity of GitHub identicons to other shapes and styles.
 
-## Use
-The identicon files rely on a function named md5() that takes a single input and returns the MD5 hash of the input in the form of a string. This project includes an md5.min.js file with this function (from [this repository](https://github.com/Zunawe/md5-js)).
+I'd love to hear how you use these!
 
-The minified versions already include the contents of md5.min.js, and may be safely used as a single inclusion.
+## Use
+The functions expect to be passed the result of some hash as a string. All substrings of the string must be parseable by parseInt(str, 16). That is, something that looks like a single hexadecimal number. The length of the string must be divisible by 2 (so that it can be interpreted as bytes), and it must be greater than or equal to 8 (at least 4 bytes).
+
+It is up to you to provide the hash, whether you build it yourself or use an existing implementation. You can find an MD5 implementation [here](https://github.com/Zunawe/md5-js) that hashes strings and is compatible.
 
 The functions squareIdenticonSVG(), circularIdenticonSVG(), and polygonalIdenticonSVG() return an SVG element that may be appended to elements via JavaScript.
 
+The functions are required to be run in a browser for the creation of namespaces for the SVG. However, the algorithm itself could easily be adapted outside a browser context.
+
 ### Square
 ```
-squareIdenticonSVG(size, id);
+squareIdenticonSVG(size, hash);
 ```
 * **size**: *number*
   * The side length in pixels to define for the SVG
-* **id**: *string*
-  * The id to be hashed for this identicon
+* **hash**: *string*
+  * A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1
 
 ### Circular
 ```
-circularIdenticonSVG(size, id, [options]);
+circularIdenticonSVG(size, hash, [options]);
 ```
 * **size**: *number*
   * The side length in pixels to define for the SVG
-* **id**: *string*
-  * The id to be hashed for this identicon
+* **hash**: *string*
+  * A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1
 * **options**: *object* (optional)
   * **shells**: *number* = 4
     * The number of shells to create (including the inner circle). (Max 8)
@@ -35,12 +39,12 @@ circularIdenticonSVG(size, id, [options]);
 
 ### Polygonal
 ```
-polygonalIdenticonSVG(size, id, [options]);
+polygonalIdenticonSVG(size, hash, [options]);
 ```
 * **size**: *number*
   * The side length in pixels to define for the SVG
-* **id**: *string*
-  * The id to be hashed for this identicon
+* **hash**: *string*
+  * A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
 * **options**: *object* (optional)
   * **shells**: *number* = 4
     * The number of shells to create (including the inner shape)
