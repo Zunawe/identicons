@@ -4,11 +4,9 @@ While the GitHub-style identicons are well-designed and widely implemented, they
 I'd love to hear how you use these!
 
 ## Use
-The functions expect to be passed the result of some hash as a string. All substrings of the string must be parseable by parseInt(str, 16). That is, something that looks like a single hexadecimal number. The length of the string must be divisible by 2 (so that it can be interpreted as bytes), and it must be greater than or equal to 8 (at least 4 bytes).
+The functions expect to be passed the result of some hash as a string. It is up to you to provide the hash, whether you build it yourself or use an existing implementation. I would recommend using the MD5 implementation [here](https://github.com/Zunawe/md5-js) that hashes strings and is compatible. In a proper result, all substrings of the string must be parseable by `parseInt(str, 16)`. That is, something that looks like a single hexadecimal number. The length of the string must be divisible by 2 (so that it can be interpreted as bytes), and it must be greater than or equal to 8 (at least 4 bytes).
 
-It is up to you to provide the hash, whether you build it yourself or use an existing implementation. You can find an MD5 implementation [here](https://github.com/Zunawe/md5-js) that hashes strings and is compatible.
-
-The functions squareIdenticonSVG(), circularIdenticonSVG(), and polygonalIdenticonSVG() return an SVG element that may be appended to elements via JavaScript.
+The functions `squareIdenticonSVG()`, `circularIdenticonSVG()`, and `polygonalIdenticonSVG()` return an SVG element that can be added to the DOM.
 
 The functions are required to be run in a browser for the creation of namespaces for the SVG. However, the algorithm itself could easily be adapted outside a browser context.
 
@@ -50,5 +48,3 @@ polygonalIdenticonSVG(size, hash, [options]);
     * The number of shells to create (including the inner shape)
   * **edges**: *number* = 5
     * The number of sides for the regular n-gon created (i.e. a value of 5 means a regular pentagon).
-
-The included file index.html gives a small example implementation in HTML.
