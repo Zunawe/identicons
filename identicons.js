@@ -117,26 +117,6 @@ function circularIdenticonSVG(size, hash, options){
 	svg.appendChild(innerCircle);
 
 	for(var i = 1; i < shells; ++i){
-		/**
-		 * Generates the path attribute for an arc given a shell and two angles.
-		 * @param {Number} shell - The shell to draw the arc for (affects radii)
-		 * @param {Number} theta1 - The starting angle for drawing the arc (0, 360) (degrees)
-		 * @param {Number} theta1 - The end angle for drawing the arc, theta2 > theta1 (0, 360) (degrees)
-		 * @return {String} A string containing the value of the d attribute for the path element
-		 */
-		var getArcPath = function (shell, theta1, theta2){
-			var r1 = innerRadius * shell;
-			var r2 = innerRadius * (i + 1) + 1;
-
-			var largeArcFlag = (theta2 - theta1) < 180 ? 0 : 1;
-
-			return `M ${centerx + _polar2CartesianX(r2, theta1)} ${centery + _polar2CartesianY(r2, theta1)} ` +
-			       `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + _polar2CartesianX(r2, theta2)} ${centery + _polar2CartesianY(r2, theta2)} ` +
-			       `L ${centerx + _polar2CartesianX(r1, theta2)} ${centery + _polar2CartesianY(r1, theta2)} ` +
-			       `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + _polar2CartesianX(r1, theta1)} ${centery + _polar2CartesianY(r1, theta1)} ` +
-			       'Z';
-		}
-
 		// Using _floorToMultiple snaps the angles for segmenting
 		var theta1 = _floorToMultiple(360 * (bytes[(i * 2) + 0] / 0xFF), 360 / segments);
 		var theta2 = _floorToMultiple(360 * (bytes[(i * 2) + 1] / 0xFF), 360 / segments);
@@ -165,6 +145,26 @@ function circularIdenticonSVG(size, hash, options){
 	}
 
 	return svg;
+
+	/**
+	 * Generates the path attribute for an arc given a shell and two angles.
+	 * @param {Number} shell - The shell to draw the arc for (affects radii)
+	 * @param {Number} theta1 - The starting angle for drawing the arc (0, 360) (degrees)
+	 * @param {Number} theta1 - The end angle for drawing the arc, theta2 > theta1 (0, 360) (degrees)
+	 * @return {String} A string containing the value of the d attribute for the path element
+	 */
+	function getArcPath(shell, theta1, theta2){
+		var r1 = innerRadius * shell;
+		var r2 = innerRadius * (shell + 1) + 1;
+
+		var largeArcFlag = (theta2 - theta1) < 180 ? 0 : 1;
+
+		return `M ${centerx + _polar2CartesianX(r2, theta1)} ${centery + _polar2CartesianY(r2, theta1)} ` +
+			   `A ${r2} ${r2} 0 ${largeArcFlag} 1 ${centerx + _polar2CartesianX(r2, theta2)} ${centery + _polar2CartesianY(r2, theta2)} ` +
+			   `L ${centerx + _polar2CartesianX(r1, theta2)} ${centery + _polar2CartesianY(r1, theta2)} ` +
+			   `A ${r1} ${r1} 0 ${largeArcFlag} 0 ${centerx + _polar2CartesianX(r1, theta1)} ${centery + _polar2CartesianY(r1, theta1)} ` +
+			   'Z';
+	}
 }
 
 /**
