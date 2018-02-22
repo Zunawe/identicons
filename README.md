@@ -1,50 +1,82 @@
 # Identicons
+
 While the GitHub-style identicons are well-designed and widely implemented, they're square. And while this is perfectly acceptable in many designs, variety in choice is never a bad thing. This project aims to apply the simplicity of GitHub identicons to other shapes and styles.
 
 I'd love to hear how you use these!
 
 ## Use
-The functions expect to be passed the result of some hash as a string. It is up to you to provide the hash, whether you build it yourself or use an existing implementation. I would recommend using the MD5 implementation [here](https://github.com/Zunawe/md5-js) that hashes strings and is compatible. In a proper result, all substrings of the string must be parseable by `parseInt(str, 16)`. That is, something that looks like a single hexadecimal number. The length of the string must be divisible by 2 (so that it can be interpreted as bytes), and it must be greater than or equal to 8 (at least 4 bytes).
 
-The functions `squareIdenticonSVG()`, `circularIdenticonSVG()`, and `polygonalIdenticonSVG()` return an SVG element that can be added to the DOM.
+The first thing you need to do is find a hashing function. The function should take a string as its first argument and return a string representing the hash (e.g. `"Hello, world!" => "6cd3556deb0da54bca060b4c39479839"`). The hash is understood as the hexadecimal spelling of data, so every two characters represent a byte (`"f1"` is `11110001` in binary). The function should produce a minimum of 5 bytes for square identicons (more for more complex shapes). [This](https://github.com/Zunawe/md5-js) MD5 implementation is compatible.
 
-The functions are required to be run in a browser for the creation of namespaces for the SVG. However, the algorithm itself could easily be adapted outside a browser context.
+Then you'll need to construct a generator:
 
-### Square
 ```
-squareIdenticonSVG(size, hash);
+var identicons = new IdenticonGenerator(myHashFunction);
 ```
-* **size**: *number*
-  * The side length in pixels to define for the SVG
-* **hash**: *string*
-  * A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1
 
-### Circular
+You can also change the hash function later by setting the `hashFunction` attribute of the `IdenticonGenerator`. You can also change the default options with the second argument of the constructor or by editing the `defaultOptions` attribute of the `IdenticonGenerator`.
+
+Generated identicons are returned as SVG elements that can be attached to the DOM.
+
+### Generation
+
+The best way to learn what the options do is to try them out [here](https://github.com/Zunawe/identicons).
+
 ```
-circularIdenticonSVG(size, hash, [options]);
+generate(id, [options])
 ```
-* **size**: *number*
-  * The side length in pixels to define for the SVG
+
 * **hash**: *string*
   * A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1
 * **options**: *object* (optional)
-  * **shells**: *number* = 4
-    * The number of shells to create (including the inner circle). (Max 8)
-  * **segments**: *number* = Infinity
+  * **type**: *string* = `'square'`
+    * The type of identicon to generate ('square', 'circular', or 'polygonal').
+  * **size**: *number* = `512`
+    * The dimension of the image in pixels.
+  * **shells**: *number* = `4`
+    * The number of shells to generate.
+  * **segments**: *number* = `Infinity`
     * Separates each shell into the provided number of segments, effectively snapping the edges of each arc to certain angles. Lower numbers increase the size of the smallest possible arclength, but provide slightly less overall variation (not enough to cause frequent collisions)
-  * **symmetricAxisTilt**: *number*
-    * Simultaneously forces the identicon to be symmetric across a single axis and sets the angle of this axis in degrees. (NOTE: This is not the same thing as rotating the identicon. It will look different at each angle mod 180).
-
-### Polygonal
-```
-polygonalIdenticonSVG(size, hash, [options]);
-```
-* **size**: *number*
-  * The side length in pixels to define for the SVG
-* **hash**: *string*
-  * A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1.
-* **options**: *object* (optional)
-  * **shells**: *number* = 4
-    * The number of shells to create (including the inner shape)
-  * **edges**: *number* = 5
+  * **symmetricAxisTilt**: *number* = `null`
+    * Simultaneously forces the identicon to be symmetric across a single axis and sets the angle of this axis in degrees. (NOTE: This is not the same thing as rotating the identicon. It will look different at each angle mod 180). To have no symmetry, set this value to `null`.
+  * **edges**: *number* = `5`
     * The number of sides for the regular n-gon created (i.e. a value of 5 means a regular pentagon).
+
+#### Square
+
+![Square Identicon Example](examples/boxy.png)
+
+```
+options.type = 'square'
+```
+
+Other options used:
+* **size**
+
+#### Circular
+
+![Circular Identicon Example](examples/curvy.png)
+
+```
+options.type = 'circular'
+```
+
+Other options used:
+* **size**
+* **shells**
+* **segments**
+* **symmetricAxisTilt**
+
+
+#### Polygonal
+
+![Polygonal Identicon Example](examples/poly.png)
+
+```
+options.type = 'polygonal'
+```
+
+Other options used:
+* **size**
+* **shells**
+* **edges**

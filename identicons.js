@@ -70,15 +70,6 @@
 
 	_this.hashFunction = hashFunction;
 
-	/**
-	 * Sets the hash function.
-	 * 
-	 * @param {hashFunction} f - Thefunction to be used for hashing ids.
-	 */
-	_this.registerHashFunction = function (f){
-		_this.hashFunction = f;
-	}
-
 	var svgNS = 'http://www.w3.org/2000/svg';
 	var generatorFunctions = {
 		square: generateSquare,
@@ -91,10 +82,9 @@
 	 * 
 	 * @param {string} id - A string id to be represented by an identicon.
 	 * @param {Object} [options] - Settings to change the shape and size of the identicon (not all options have an effect on certain shapes).
-	 * @param {Object} [options] - Settings to change the shape and size of the identicon (not all options have an effect on certain shapes).
 	 * @param {string} [options.type='square'] - The type of identicon to generate ('square', 'circular', or 'polygonal').
 	 * @param {number} [options.size=512] - The dimension of the image in pixels.
-	 * @param {number} [options.shells=4] - The number of shells to generate (min 1, max 8).
+	 * @param {number} [options.shells=4] - The number of shells to generate.
 	 * @param {number} [options.segments=Infinity] - The number of segments of equal angle to snap the arcs to.
 	 * @param {number} [options.symmetryAxisTilt=null] - If a number, makes the SVG symmetric about the line defined here in polar coordinates (degrees).
 	 * @param {number} [options.edges=5] - The number of edges (i.e. 6 makes a regular hexagon shape).
