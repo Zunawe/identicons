@@ -20,7 +20,7 @@ Generated identicons are returned as SVG elements that can be attached to the DO
 
 ### Generation
 
-The best way to learn what the options do is to try them out [here](https://github.com/Zunawe/identicons).
+The best way to learn what the options do is to try them out [here](https://zunawe.github.io/identicons/).
 
 ```
 generate(id, [options])
