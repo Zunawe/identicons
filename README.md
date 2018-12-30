@@ -26,8 +26,8 @@ The best way to learn what the options do is to try them out [here](https://zuna
 generate(id, [options])
 ```
 
-* **hash**: *string*
-  * A string representing a hexadecimal number. Ideally, this is the output of a hash function such as MD5 or SHA-1
+* **id**: *string*
+  * A string id to be represented by an identicon.
 * **options**: *object* (optional)
   * **type**: *string* = `'square'`
     * The type of identicon to generate ('square', 'circular', or 'polygonal').
