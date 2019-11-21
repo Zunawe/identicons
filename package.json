@@ -1,0 +1,22 @@
+{
+  "name": "identicons",
+  "version": "1.0.0",
+  "description": "Various configurable identicon styles with SVG output.",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zunawe/identicons.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Zunawe/identicons/issues"
+  },
+  "homepage": "https://github.com/Zunawe/identicons#readme",
+  "dependencies": {
+    "xmlbuilder": "^13.0.2"
+  }
+}
