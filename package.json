@@ -1,5 +1,5 @@
 {
-  "name": "identicons",
+  "name": "svg-identicon",
   "version": "1.0.0",
   "description": "Various configurable identicon styles with SVG output.",
   "main": "./src/index.js",
