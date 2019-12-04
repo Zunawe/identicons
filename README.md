@@ -6,77 +6,97 @@ I'd love to hear how you use these!
 
 ## Use
 
-The first thing you need to do is find a hashing function. The function should take a string as its first argument and return a string representing the hash (e.g. `"Hello, world!" => "6cd3556deb0da54bca060b4c39479839"`). The hash is understood as the hexadecimal spelling of data, so every two characters represent a byte (`"f1"` is `11110001` in binary). The function should produce a minimum of 5 bytes for square identicons (more for more complex shapes). [This](https://github.com/Zunawe/md5-js) MD5 implementation is compatible.
+The first thing you need to do is find a way to hash the data you want to "identify" with an identicon. For example, you could use MD5 to produce this transformation: `"Hello, world!" => '6cd3556deb0da54bca060b4c39479839'`). The hash doesn't need to be enormous, but should be more than 9 bytes. The function doesn't need to be complex, but each bit in the hash should have about a 50/50 chance of being 1 or 0. The less random the hash is, the more predictable the image will be, so just using incremental user ids is probably not enough for variation.
 
-Then you'll need to construct a generator:
+This hash can either be a string of hexadecimal digits or an `ArrayBuffer`.
 
-```
-var identicons = new IdenticonGenerator(myHashFunction);
-```
-
-You can also change the hash function later by setting the `hashFunction` attribute of the `IdenticonGenerator`. You can also change the default options with the second argument of the constructor or by editing the `defaultOptions` attribute of the `IdenticonGenerator`.
-
-Generated identicons are returned as SVG elements that can be attached to the DOM.
+An important note: this code is open source (obviously), does no further processing on the provided hashes, and may or may not use the entirety of the hash to generate an image. **DO NOT** use these identicons to represent sensitive data, even if you use some supposedly secure hashing algorithm. While it may be tempting to use something like the hex representation of a scrambled user email as a hash, please don't. That's equivalent to setting your user's public username to their email. Identicons are **not** encryption.
 
 ### Generation
 
 The best way to learn what the options do is to try them out [here](https://zunawe.github.io/identicons/).
 
-```
-generate(id, [options])
+```js
+const identicon = require('svg-identicon')
+identicon(options)
 ```
 
-* **id**: *string*
-  * A string id to be represented by an identicon.
-* **options**: *object* (optional)
-  * **type**: *string* = `'square'`
-    * The type of identicon to generate ('square', 'circular', or 'polygonal').
-  * **size**: *number* = `512`
+Not every option is used for every `type` of identicon.
+
+* **options**: *object*
+  * **hash**: *string*
+    * A string of hexadecimal digits used to generate the identicon.
+  * **type**: *string*
+    * The type of identicon to generate (`'SQUARE'`, `'CIRCULAR'`, or `'POLYGONAL'`).
+  * **width**: *number* = `128`
     * The dimension of the image in pixels.
-  * **shells**: *number* = `4`
-    * The number of shells to generate.
-  * **segments**: *number* = `Infinity`
-    * Separates each shell into the provided number of segments, effectively snapping the edges of each arc to certain angles. Lower numbers increase the size of the smallest possible arclength, but provide slightly less overall variation (not enough to cause frequent collisions)
+  * **size**: *number*
+    * A sort of dimension describing the complexity of the identicon. For squares identicons, it's the number of boxes on a side. For circular it's the number of shells.
+  * **segments**: *number*
+    * Separates each shell into the provided number of segments.
   * **symmetricAxisTilt**: *number* = `null`
     * Simultaneously forces the identicon to be symmetric across a single axis and sets the angle of this axis in degrees. (NOTE: This is not the same thing as rotating the identicon. It will look different at each angle mod 180). To have no symmetry, set this value to `null`.
-  * **edges**: *number* = `5`
-    * The number of sides for the regular n-gon created (i.e. a value of 5 means a regular pentagon).
+  * **background**: *object*
+    * **color**: *string* = `'#EEEEEE'`
+    * **width**: *number* = `options.width`
+    * **rx**: *number* = `0`
 
-#### Square
+##### Square
 
 ![Square Identicon Example](examples/boxy.png)
 
-```
-options.type = 'square'
-```
+Required Options:
+* **type** = `'SQUARE'`
+* **hash**
 
-Other options used:
+Other Options:
 * **size**
+* **width**
 
-#### Circular
+##### Circular
 
 ![Circular Identicon Example](examples/curvy.png)
 
-```
-options.type = 'circular'
-```
+Required Options:
+* **type** = `'CIRCULAR'`
+* **hash**
 
-Other options used:
+Other Options:
 * **size**
-* **shells**
+* **width**
 * **segments**
-* **symmetricAxisTilt**
+* **symmetricAxisAngle**
 
-
-#### Polygonal
+##### Polygonal
 
 ![Polygonal Identicon Example](examples/poly.png)
 
-```
-options.type = 'polygonal'
+Required Options:
+* **type** = `'POLYGONAL'`
+* **hash**
+
+Other Options:
+* **size**
+* **width**
+* **segments**
+
+#### Output
+
+The return value of `identicon` is the string representation of an SVG. You can save this to a file, parse it, add it to a DOM, log it, etc...
+
+Node:
+```js
+const fs = require('fs')
+
+let svg = identicon({ type: 'SQUARE', hash: '1234567890ABCDEF' })
+
+fs.writeFile(./'identicon.svg', svg, console.log)
 ```
 
-Other options used:
-* **size**
-* **shells**
-* **edges**
+Browser (after using webpack):
+```js
+let svg = identicon({ type: 'SQUARE', hash: '1234567890ABCDEF' })
+
+let container = document.getElementById("container");
+container.innerHTML = svg;
+```
