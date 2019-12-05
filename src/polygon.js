@@ -1,6 +1,6 @@
 const xmlbuilder = require('xmlbuilder')
 
-const { addBackground, bitArray, byteArray, polar } = require('./util')
+const { addBackground, bitArray, byteArray, int2ByteString, polar } = require('./util')
 
 const generate = ({ hash, size = 4, width = 128, segments = 5, background }) => {
   let bytes = byteArray(hash)

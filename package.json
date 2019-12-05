@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Various configurable identicon styles with SVG output.",
   "main": "./src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zunawe/identicons.git"
@@ -18,5 +15,6 @@
   "homepage": "https://github.com/Zunawe/identicons#readme",
   "dependencies": {
     "xmlbuilder": "^13.0.2"
-  }
+  },
+  "devDependencies": {}
 }
