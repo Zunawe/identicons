@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Identicons!</title>
+		<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+
+		<style>
+			body {
+				margin-top: 0px;
+
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			#description {
+				max-width: 700px;
+				padding-top: 100px;
+			}
+
+			#form {
+				margin: 100px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="description">This site creates <a href="https://en.wikipedia.org/wiki/Identicon">identicons</a> from strings. This page in particular hashes strings using MD5 and turns the hash into an image. You can use this on your site with the inclusion a couple JavaScript files. Visit the <a href="https://github.com/Zunawe/identicons">GitHub repository</a> for more information.</div>
+
+		<form id="form">
+			<select id="identiconType">
+				<option value="SQUARE">Square</option>
+				<option value="CIRCULAR">Circular</option>
+				<option value="POLYGONAL">Polygonal</option>
+			</select>
+			<table style="table-layout: fixed;">
+				<tr id="sizeFieldContainer">
+					<td>Size:</td>
+					<td><input id="sizeField" size="4" type="number" /></td>
+				</tr>
+				<tr id="segmentFieldContainer">
+					<td>Segments:</td>
+					<td><input id="segmentField" size="4" type="number" /></td>
+				</tr>
+				<tr id="symmetryFieldContainer">
+					<td>Symmetric Axis Angle:</td>
+					<td><input id="symmetryField" size="4" type="number" /></td>
+				</tr>
+			</table>
+			<textarea id="textInput" rows="4" cols="50"></textarea>
+		</form>
+		<div id="identicon"></div>
+
+		<div style="color:red">IMPORTANT: Please do not use private or sensitive information to generate identicons!</div>
+		<script src="./demo/dist/bundle.js"></script>
+	</body>
+</html>
