@@ -14,6 +14,8 @@ const generate = ({ hash, size = 4, width = 128, segments = 5, background }) => 
   let svg = xmlbuilder.create('svg')
   svg.att('width', width)
   svg.att('height', width)
+  svg.att('viewBox', `0 0 ${width} ${width}`)
+  svg.att('preserveAspectRatio', 'xMinYMin')
   svg.att('xmlns', 'http://www.w3.org/2000/svg')
 
   if (background) {
