@@ -1,6 +1,6 @@
 const xmlbuilder = require('xmlbuilder')
 
-const { addBackground, byteArray, int2ByteString, polar } = require('./util')
+const { addBackground, byteArray, int2ByteString, polar, reverse } = require('./util')
 
 const generate = ({ hash, size = 4, width = 128, segments = Infinity, symmetricAxisAngle, background }) => {
   let bytes = byteArray(hash)
@@ -12,6 +12,8 @@ const generate = ({ hash, size = 4, width = 128, segments = Infinity, symmetricA
   let svg = xmlbuilder.create('svg')
   svg.att('width', width)
   svg.att('height', width)
+  svg.att('viewBox', `0 0 ${width} ${width}`)
+  svg.att('preserveAspectRatio', 'xMinYMin')
   svg.att('xmlns', 'http://www.w3.org/2000/svg')
 
   if (background) {
@@ -92,14 +94,6 @@ const floorToCongruent = (n, m) => {
   n /= m
   n = Math.floor(n)
   return n * m
-}
-
-const reverse = (arr) => {
-  let newArr = new Array(arr.length)
-  for (let i = 0; i < arr.length; ++i) {
-    newArr[arr.length - i - 1] = arr[i]
-  }
-  return newArr
 }
 
 module.exports = generate

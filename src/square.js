@@ -1,10 +1,12 @@
 const xmlbuilder = require('xmlbuilder')
 
-const { addBackground, bitArray, byteArray, int2ByteString } = require('./util')
+const { addBackground, bitArray, byteArray, int2ByteString, reverse } = require('./util')
 
 const generate = ({ hash, size = 5, width = 128, background }) => {
   let bytes = byteArray(hash)
   let bits = bitArray(bytes)
+  bytes = reverse(bytes)
+  bits = reverse(bits)
 
   let color = '#' + bytes.slice(bytes.length - 3, bytes.length).map(int2ByteString).join('')
 
@@ -14,6 +16,8 @@ const generate = ({ hash, size = 5, width = 128, background }) => {
   let svg = xmlbuilder.create('svg')
   svg.att('width', width)
   svg.att('height', width)
+  svg.att('viewBox', `0 0 ${width} ${width}`)
+  svg.att('preserveAspectRatio', 'xMinYMin')
   svg.att('xmlns', 'http://www.w3.org/2000/svg')
 
   if (background) {

@@ -11,7 +11,7 @@ const addBackground = (svg, { color, width, rx, ry }) => {
 }
 
 const bitArray = (a) => {
-  return byteArray(a).map((n) => n.toString(2)).join('').split('').map(Number.parseInt)
+  return byteArray(a).map((n) => int2BitString(n)).join('').split('').map((digit) => Number.parseInt(digit))
 }
 
 const byteArray = (a) => {
@@ -40,6 +40,10 @@ const byteArray = (a) => {
   throw new TypeError(`Unable to construct an array of bytes from provided input: ${a.toString()}`)
 }
 
+const int2BitString = (n) => {
+  return ('00000000' + n.toString(2)).slice(-8)
+}
+
 const int2ByteString = (n) => {
   return ('0' + n.toString(16)).slice(-2)
 }
@@ -51,10 +55,20 @@ const polar = (r, theta) => {
   }
 }
 
+const reverse = (arr) => {
+  let newArr = new Array(arr.length)
+  for (let i = 0; i < arr.length; ++i) {
+    newArr[arr.length - i - 1] = arr[i]
+  }
+  return newArr
+}
+
 module.exports = {
   addBackground,
   bitArray,
   byteArray,
+  int2BitString,
   int2ByteString,
-  polar
+  polar,
+  reverse
 }
