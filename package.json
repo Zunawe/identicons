@@ -2,7 +2,10 @@
   "name": "svg-identicon",
   "version": "1.0.1",
   "description": "Various configurable identicon styles with SVG output.",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Zunawe/identicons.git"
@@ -13,8 +16,10 @@
     "url": "https://github.com/Zunawe/identicons/issues"
   },
   "homepage": "https://github.com/Zunawe/identicons#readme",
-  "dependencies": {
-    "xmlbuilder": "^13.0.2"
+  "devDependencies": {
+    "typescript": "^4.9.5"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "xmlbuilder2": "^3.0.2"
+  }
 }
